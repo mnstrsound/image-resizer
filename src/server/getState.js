@@ -33,7 +33,6 @@ export default () => (
                 for (let i = 1; i < state.cards.length; i++) {
                     fetchCardsTransactions.then(() => { fetchCardTransactions(i); });
                 }
-
             }).catch(e => reject(e));
     })
 );

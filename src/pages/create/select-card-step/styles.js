@@ -6,4 +6,4 @@ export default {
         marginTop: 12,
         width: '100%'
     }
-}
+};

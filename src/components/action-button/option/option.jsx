@@ -2,7 +2,6 @@ import React from 'react';
 import Types from 'prop-types';
 import { MenuItem } from 'material-ui/Menu';
 
-
 class Option extends React.Component {
     static propTypes = {
         /** Текст внутри */
@@ -27,6 +26,6 @@ class Option extends React.Component {
             </MenuItem>
         );
     }
-};
+}
 
 export default Option;

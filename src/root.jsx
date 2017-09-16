@@ -1,5 +1,4 @@
 import React from 'react';
-import Types from 'prop-types';
 import { Provider } from 'mobx-react';
 import { Router, Switch } from 'react-router';
 import { Route } from 'react-router-dom';
@@ -22,12 +21,5 @@ const Root = ({ stores, history, basename }) => (
         </Router>
     </Provider>
 );
-
-
-Root.propTypes = {
-    stores: Types.shape({}),
-    history: Types.shape({}),
-    basename: Types.string
-};
 
 export default Root;

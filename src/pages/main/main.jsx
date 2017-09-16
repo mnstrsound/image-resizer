@@ -4,37 +4,20 @@ import { observer, inject } from 'mobx-react';
 
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Avatar from 'material-ui/Avatar';
+import List from 'material-ui/List';
 import Button from 'material-ui/Button';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { LinearProgress } from 'material-ui/Progress';
-import Typography  from 'material-ui/Typography';
-import ArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
+import Typography from 'material-ui/Typography';
 import AddIcon from 'material-ui-icons/Add';
 
 import NavigationController from '../../controllers/navigation-controller';
 import CustomAppBar from '../../components/custom-app-bar';
 import styles from './styles';
-
-const getRandomProgress = (limit, transactions) => {
-    const { cardId, categoriesIds, amount } = limit;
-    let sum = 0;
-
-    transactions[cardId].forEach((transaction) => {
-        if (categoriesIds.indexOf(transaction.categoryId) !== -1 && transaction.TransactionSum < 0) {
-            sum += -(transaction.TransactionSum);
-        }
-    });
-
-    return sum / amount * 100;
-};
+import Limit from '../../components/limit';
 
 @withStyles(styles)
-@inject(({ limitsStore, cardsStore, transactionsStore }) => ({
+@inject(({ limitsStore, transactionsStore }) => ({
     limitsStore,
-    cardsStore,
     transactionsStore
 }))
 @observer
@@ -64,7 +47,6 @@ class Main extends React.Component {
     renderCustomAppBar() {
         return (
             <CustomAppBar
-                leftAddon={ <ArrowLeftIcon /> }
                 rightAddon={ <AddIcon onClick={ this.handleCreateButtonClick } /> }
                 title='Лимиты'
             />
@@ -127,23 +109,10 @@ class Main extends React.Component {
         return (
             <List>
                 { limits.map(limit => (
-                    <div key={ limit.title }>
-                        <ListItem
-                            dense={ true }
-                            button={ true }
-                            onClick={ () => NavigationController.toLimitScreen(limit._id) }
-                        >
-                            <Avatar>{ limit.name[0] }</Avatar>
-                            <ListItemText
-                                primary={ limit.name }
-                            />
-                        </ListItem>
-                        <LinearProgress
-                            mode='determinate'
-                            value={ getRandomProgress(limit, transactions) }
-                        />
-                        <Divider />
-                    </div>
+                    <Limit
+                        limit={ limit }
+                        transactions={ transactions[limit.cardId] }
+                    />
                 )) }
             </List>
         );

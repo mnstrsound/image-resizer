@@ -15,7 +15,12 @@ class CustomAppBar extends React.Component {
         /** Левый элемент */
         leftAddon: Types.node,
         /** Правый элемент */
-        rightAddon: Types.node
+        rightAddon: Types.node,
+        /** CSS классы */
+        classes: Types.shape({
+            toolBar: Types.string,
+            addon: Types.string
+        })
     };
 
     render() {

@@ -8,7 +8,7 @@ import Button from 'material-ui/Button';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ cardsStore }) => ({ cardsStore,  }))
+@inject(({ cardsStore }) => ({ cardsStore }))
 @observer
 class SelectCardStep extends React.Component {
     render() {

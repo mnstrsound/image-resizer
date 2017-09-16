@@ -8,5 +8,15 @@ export default [
         title: 'Снятие наличных',
         id: 2,
         pattern: /банкомат/i
+    },
+    {
+        title: 'Кафе',
+        id: 3,
+        pattern: /кофейня/i
+    },
+    {
+        title: 'Магазины',
+        id: 4,
+        pattern: /магазин/i
     }
 ];

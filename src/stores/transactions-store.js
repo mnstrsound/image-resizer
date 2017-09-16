@@ -1,16 +1,10 @@
-import { action, observable } from 'mobx';
-
-import TransactionsService from '../services/transactions-service';
+import { observable } from 'mobx';
 
 class Transactions {
     @observable transactions = [];
 
     constructor(transactions) {
         this.transactions = transactions;
-    }
-
-    getCardSpendingTransactions(id) {
-        return this.transactions[id].find(transaction => transaction.TransactionSum < 0);
     }
 }
 

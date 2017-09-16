@@ -5,6 +5,17 @@ import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/D
 import Button from 'material-ui/Button';
 
 class ConfirmationDialog extends React.Component {
+    static propTypes = {
+        /** Заголовок окна */
+        title: Types.string,
+        /** Контент внутри окна */
+        children: Types.Node,
+        /** Обработчик закрытия */
+        onClose: Types.func,
+        /** Обработчик подтверждения */
+        onConfirm: Types.func
+    }
+
     render() {
         return (
             <Dialog

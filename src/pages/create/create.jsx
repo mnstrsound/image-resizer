@@ -29,6 +29,24 @@ class Main extends React.Component {
         activeStep: 0
     };
 
+    handleNext = () => {
+        if (this.state.activeStep === this.steps.length - 1) {
+            this.limit.save().then(() => {
+                NavigationController.toMainScreen();
+            });
+        } else {
+            this.setState({
+                activeStep: this.state.activeStep + 1
+            });
+        }
+    };
+
+    handleBack = () => {
+        this.setState({
+            activeStep: this.state.activeStep - 1
+        });
+    };
+
     constructor(props) {
         super(props);
         const { match: { params: { id } }, limitsStore: { limits } } = props;
@@ -49,7 +67,7 @@ class Main extends React.Component {
     renderCustomAppBar() {
         return (
             <CustomAppBar
-                leftAddon={ <ArrowLeftIcon onClick={ () => { this.props.history.goBack();} } /> }
+                leftAddon={ <ArrowLeftIcon onClick={ () => { this.props.history.goBack(); } } /> }
                 title='Создать лимит'
             />
         );
@@ -85,25 +103,6 @@ class Main extends React.Component {
             </div>
         ));
     }
-
-
-    handleNext = () => {
-        if (this.state.activeStep === this.steps.length - 1) {
-            this.limit.save().then(() => {
-                NavigationController.toMainScreen();
-            });
-        } else {
-            this.setState({
-                activeStep: this.state.activeStep + 1
-            });
-        }
-    };
-
-    handleBack = () => {
-        this.setState({
-            activeStep: this.state.activeStep - 1
-        });
-    };
 }
 
 export default Main;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer, inject } from 'mobx-react';
 
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
@@ -7,9 +6,10 @@ import TextField from 'material-ui/TextField';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ createStore }) => ({ createStore }))
-@observer
 class Main extends React.Component {
+    handleNameChange = (e) => {
+        this.props.limit.setName(e.target.value);
+    }
 
     render() {
         return (
@@ -22,10 +22,6 @@ class Main extends React.Component {
                 onChange={ this.handleNameChange }
             />
         );
-    }
-
-    handleNameChange = (e) => {
-        this.props.limit.setName(e.target.value);
     }
 }
 

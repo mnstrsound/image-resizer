@@ -8,6 +8,10 @@ class Transactions {
     constructor(transactions) {
         this.transactions = transactions;
     }
+
+    getCardSpendingTransactions(id) {
+        return this.transactions[id].find(transaction => transaction.TransactionSum < 0);
+    }
 }
 
 export default Transactions;

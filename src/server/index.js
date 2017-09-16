@@ -5,10 +5,13 @@ import pug from 'js-koa-pug';
 
 import getState from './getState';
 import { routes, allowedMethods } from './routes';
+import { initConnection } from './mongo';
+
 
 getState().then((state) => {
-    const app = new Koa();
+    initConnection();
 
+    const app = new Koa();
     app.use(pug('src/server/views'));
     app.use(koaStatic('build'));
     app.use(koaBody());

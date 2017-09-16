@@ -1,12 +1,11 @@
 import { action, observable } from 'mobx';
 
 class Categories {
-    @observable categories = [
-        { title: 'Питание' },
-        { title: 'Одежда' },
-        { title: 'Развлечения' },
-        { title: 'Бытовая техника' }
-    ];
+    @observable categories = [];
+
+    constructor(categories) {
+        this.categories = categories;
+    }
 }
 
 export default Categories;

@@ -1,10 +1,10 @@
 import request from './lib/request';
-import Categories from './helpers';
+import Categories from '../constants/categories';
 
 // Почему тут такая колбаса? Потому что сервер падает с 503 при нескольких параллельных запросах
 export default () => (
     new Promise((resolve, reject) => {
-        const state = { cards: [], transactions: {} };
+        const state = { cards: [], transactions: {}, categories: Categories };
         const fetchCardTransactions = index => (
             request.post('https://api.open.ru/MyCards/1.0.0/MyCardsInfo/history', { CardId: state.cards[index].CardId })
                 .then((data) => {

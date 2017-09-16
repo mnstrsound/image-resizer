@@ -8,17 +8,18 @@ import { observer, inject } from 'mobx-react';
 
 import CustomAppBar from '../../components/custom-app-bar';
 import NavigationController from '../../controllers/navigation-controller';
+import Limit from '../../models/limit';
 
-import FirstStep from './first-step';
-import SecondStep from './second-step';
-import ThirdStep from './third-step';
+import SelectCategoriesStep from './select-categories-step';
+import EnterNameStep from './enter-name-step';
+import SettingsStep from './settings-step';
 import SelectCardStep from './select-card-step';
 
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ createStore, cardsStore }) => ({
-    createStore,
+@inject(({ limitsStore, cardsStore }) => ({
+    limitsStore,
     cardsStore
 }))
 @observer
@@ -30,7 +31,9 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.steps = [SelectCardStep, FirstStep, SecondStep, ThirdStep];
+        const { match: { params: { id } }, limitsStore: { limits } } = props;
+        this.limit = limits.find(limit => limit._id === id) || new Limit();
+        this.steps = [SelectCardStep, SelectCategoriesStep, EnterNameStep, SettingsStep];
     }
 
     render() {
@@ -53,7 +56,7 @@ class Main extends React.Component {
     }
 
     renderStepper() {
-        const nextButtonText = this.state.activeStep === 2
+        const nextButtonText = this.state.activeStep === this.steps.length - 1
             ? 'Готово'
             : 'Далее';
         return (
@@ -67,7 +70,7 @@ class Main extends React.Component {
                 nextButtonText={ nextButtonText }
                 backButtonText={ 'Назад' }
                 disableBack={ this.state.activeStep === 0 }
-                disableNext={ !this.props.createStore.isValid(this.state.activeStep) }
+                disableNext={ !this.limit.isValid(this.state.activeStep) }
             />
         );
     }
@@ -78,7 +81,7 @@ class Main extends React.Component {
                 key={ index }
                 className={ this.state.activeStep !== index && this.props.classes.hidden }
             >
-                <Component />
+                <Component limit={ this.limit } />
             </div>
         ));
     }
@@ -86,7 +89,7 @@ class Main extends React.Component {
 
     handleNext = () => {
         if (this.state.activeStep === this.steps.length - 1) {
-            this.props.createStore.save().then(() => {
+            this.limit.save().then(() => {
                 NavigationController.toMainScreen();
             });
         } else {

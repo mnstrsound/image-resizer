@@ -18,9 +18,11 @@ import styles from './styles';
 const getRandomProgress = () => Math.floor(Math.random() * 100) + 1;
 
 @withStyles(styles)
-@inject(({ limitsStore, transactionsStore }) => ({
+@inject(({ limitsStore, transactionsStore, cardsStore, createStore }) => ({
     limitsStore,
-    transactionsStore
+    transactionsStore,
+    cardsStore,
+    createStore
 }))
 @observer
 class Main extends React.Component {
@@ -28,12 +30,20 @@ class Main extends React.Component {
         open: false
     }
 
+    handleEditButtonClick = () => {
+        const { id } = this.props.match.params;
+        NavigationController.toEditScreen(id);
+    }
+
     render() {
-        const id = this.props.match.params.id;
-        const limit = this.props.limitsStore.limits.find(item => item.id == id);
-        // console.log(this.props.transactionsStore);
-        const spendingTransactions = this.props.transactionsStore.transactions[limit.cardId].filter(item => item.TransactionSum < 0)
-        console.log(id, this.props.transactionsStore.transactions[limit.cardId]);
+        console.log(this.props);
+        const { id } = this.props.match.params;
+        const limit = this.props.limitsStore.limits.find(item => item._id == id);
+        const card = this.props.cardsStore.cards.find(card => card.CardId === limit.cardId);
+
+        const spendingTransactions = this.props.transactionsStore.transactions[limit.cardId]
+            .filter(item => item.TransactionSum < 0)
+
         return (
             <div className={ this.props.classes.limit }>
                 { this.renderCustomAppBar() }
@@ -55,12 +65,13 @@ class Main extends React.Component {
     }
 
     renderDeleteConfirmationModal() {
+        const { id } = this.props.match.params;
         return (
             <ConfirmationDialog
                 open={ this.state.open }
                 title='Удалить лимит?'
                 onClose={ () => { this.setState({ open: false }); } }
-                onConfirm={ () => { this.setState({ open: false }); console.log('confirmed'); } }
+                onConfirm={ () => { this.props.limitsStore.deleteLimit(id); } }
             >
                 <Typography>Подтвердите удаление лимита</Typography>
             </ConfirmationDialog>
@@ -69,7 +80,7 @@ class Main extends React.Component {
 
     renderCustomAppBar() {
         const options = [
-            { text: 'Редактировать', handler: () => NavigationController.toCreateScreen() },
+            { text: 'Редактировать', handler: this.handleEditButtonClick },
             { text: 'Удалить', handler: () => { this.setState({ open: true }); } }
         ];
         return (

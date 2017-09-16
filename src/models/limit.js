@@ -1,8 +1,9 @@
 import { observable, computed, action } from 'mobx';
 
 export default class Limit {
+    @observable cardId = '';
 
-    @observable categories = [];
+    @observable categoriesIds = [];
 
     @observable name = '';
 
@@ -12,9 +13,9 @@ export default class Limit {
 
     @observable calcForDay = false;
 
-    @action toggleCategory = (category) => {
-        if (this.categories.includes(category)) this.categories.remove(category);
-        else this.categories.push(category);
+    @action toggleCategoryId = (categoryId) => {
+        if (this.categoriesIds.includes(categoryId)) this.categoriesIds.remove(categoryId);
+        else this.categoriesIds.push(categoryId);
     }
 
     @action toggleCalcForWeek = () => {
@@ -25,6 +26,10 @@ export default class Limit {
         this.calcForDay = !this.calcForDay;
     }
 
+    @action setCardId = (cardId) => {
+        this.cardId = cardId;
+    }
+
     @action setName = (name) => {
         this.name = name;
     }
@@ -33,12 +38,12 @@ export default class Limit {
         this.amount = amount;
     }
 
-    constructor(limit) {
-        const keys = Object.keys(limit);
-
-        keys.forEach((key) => {
-            this[key] = limit[key];
-        });
+    constructor(params) {
+        if (params) {
+            Object.keys(params).forEach((prop) => {
+                this[prop] = params[prop];
+            });
+        }
     }
 
     @computed get amountForWeek() {
@@ -50,19 +55,20 @@ export default class Limit {
     }
 
     @computed get hasCategories() {
-        return this.categories.length > 0;
+        return this.categoriesIds.length > 0;
     }
 
     save() {
-        const { categories, name, amount, calcForWeek, calcForDay } = this;
-        return fetch('/api/limits', {
+        const { cardId, categoriesIds, name, amount, calcForWeek, calcForDay } = this;
+        return fetch('/api/limit', {
             method: 'post',
             headers: {
                 Accept: 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                categories,
+                cardId,
+                categoriesIds,
                 name,
                 amount,
                 calcForWeek,
@@ -71,8 +77,8 @@ export default class Limit {
         });
     }
 
-    hasCategory(category) {
-        return this.categories.includes(category);
+    hasCategory(categoryId) {
+        return this.categoriesIds.includes(categoryId);
     }
 
     isValid(step) {
@@ -80,12 +86,15 @@ export default class Limit {
 
         switch (step) {
             case 0:
-                valid = this.categories.length > 0;
+                valid = this.cardId.length > 0;
                 break;
             case 1:
-                valid = !!this.name;
+                valid = this.categoriesIds.length > 0;
                 break;
             case 2:
+                valid = !!this.name;
+                break;
+            case 3:
                 valid = !!this.amount;
                 break;
         }

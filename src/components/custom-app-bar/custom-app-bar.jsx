@@ -21,18 +21,21 @@ class CustomAppBar extends React.Component {
     render() {
         return (
             <AppBar
-                className={ this.props.classes.appBar }
                 position='fixed'
             >
                 <Toolbar className={ this.props.classes.toolBar }>
-                    { this.props.leftAddon }
+                    <div className={ this.props.classes.addon }>
+                        { this.props.leftAddon }
+                    </div>
                     <Typography
                         type='subheading'
                         color='inherit'
                     >
                         { this.props.title }
                     </Typography>
-                    { this.props.rightAddon }
+                    <div className={ this.props.classes.addon }>
+                        { this.props.rightAddon }
+                    </div>
                 </Toolbar>
             </AppBar>
         );

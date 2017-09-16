@@ -11,10 +11,19 @@ export default {
     tabContainer: {
         padding: '0 12px'
     },
-    bottomNavigation: {
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0
+    limits: {
+        overflowY: 'auto',
+        height: 'calc(100vh - 104px)'
+    },
+    greeting: {
+        marginTop: -24,
+        padding: '0 12px'
+    },
+    greetingText: {
+        textAlign: 'center'
+    },
+    createButton: {
+        marginTop: 12,
+        width: '100%'
     }
 };

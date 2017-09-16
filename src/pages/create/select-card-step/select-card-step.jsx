@@ -8,36 +8,33 @@ import Button from 'material-ui/Button';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ createStore, cardsStore }) => ({
-    createStore,
-    cardsStore
-}))
+@inject(({ cardsStore }) => ({ cardsStore,  }))
 @observer
 class SelectCardStep extends React.Component {
     render() {
+        const { limit: { cardId }, cardsStore: { cards } } = this.props;
         return (
             <div>
-                <Typography>
+                <Typography className={ this.props.classes.text }>
                     Выберите карту
                 </Typography>
-                { this.props.cardsStore.cards.map(card => (
-                    <Typography key={ card.CardId }>
-                        <Button
-                            raised={ true }
-                            color={ this.props.createStore.cardId === card.CardId ? 'accent' : 'primary' }
-                            style={ { width: '100%' } }
-                            onClick={ () => { this.handleButtonClick(card.CardId); } }
-                        >
-                            { card.CardName }
-                        </Button>
-                    </Typography>
+                { cards.map(card => (
+                    <Button
+                        key={ card.CardId }
+                        raised={ true }
+                        color={ cardId === card.CardId ? 'accent' : 'primary' }
+                        className={ this.props.classes.button }
+                        onClick={ () => { this.handleButtonClick(card.CardId); } }
+                    >
+                        { card.CardName }
+                    </Button>
                 )) }
             </div>
         );
     }
 
     handleButtonClick(cardId) {
-        this.props.createStore.setCardId(cardId);
+        this.props.limit.setCardId(cardId);
     }
 }
 

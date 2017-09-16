@@ -7,9 +7,7 @@ import TextField from 'material-ui/TextField';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ createStore }) => ({
-    createStore
-}))
+@inject(({ createStore }) => ({ createStore }))
 @observer
 class Main extends React.Component {
 
@@ -20,14 +18,14 @@ class Main extends React.Component {
                 label='Введите название'
                 helperText='Название вашего лимита'
                 fullWidth={ true }
-                value={ this.props.createStore.name }
+                value={ this.props.limit.name }
                 onChange={ this.handleNameChange }
             />
         );
     }
 
     handleNameChange = (e) => {
-        this.props.createStore.setName(e.target.value);
+        this.props.limit.setName(e.target.value);
     }
 }
 

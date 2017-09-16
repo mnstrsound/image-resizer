@@ -7,9 +7,10 @@ import AppBar from 'material-ui/AppBar';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
+import Button from 'material-ui/Button';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { LinearProgress } from 'material-ui/Progress';
-import BottomNavigation, { BottomNavigationButton } from 'material-ui/BottomNavigation';
+import Typography  from 'material-ui/Typography';
 import ArrowLeftIcon from 'material-ui-icons/KeyboardArrowLeft';
 import AddIcon from 'material-ui-icons/Add';
 
@@ -17,11 +18,21 @@ import NavigationController from '../../controllers/navigation-controller';
 import CustomAppBar from '../../components/custom-app-bar';
 import styles from './styles';
 
-const getRandomProgress = () => Math.floor(Math.random() * 100) + 1;
+const getRandomProgress = (limit, transactions) => {
+    const { cardId, categoriesIds, amount } = limit;
+    let sum = 0;
+
+    transactions[cardId].forEach((transaction) => {
+        if (categoriesIds.indexOf(transaction.categoryId) !== -1 && transaction.TransactionSum < 0) {
+            sum += -(transaction.TransactionSum);
+        }
+    });
+
+    return sum / amount * 100;
+};
 
 @withStyles(styles)
-@inject(({ categoriesStore, limitsStore, cardsStore, transactionsStore }) => ({
-    categoriesStore,
+@inject(({ limitsStore, cardsStore, transactionsStore }) => ({
     limitsStore,
     cardsStore,
     transactionsStore
@@ -32,7 +43,7 @@ class Main extends React.Component {
         activeTabIndex: 0
     }
 
-    handleAddIconClick = () => {
+    handleCreateButtonClick = () => {
         NavigationController.toCreateScreen();
     }
 
@@ -44,9 +55,8 @@ class Main extends React.Component {
         return (
             <div className={ this.props.classes.main }>
                 { this.renderCustomAppBar() }
-                { this.renderTabs() }
-                { this.renderSwipeableLimits() }
-                { this.renderBottomNavigation() }
+                { this.props.limitsStore.limits.length > 0 && this.renderTabs() }
+                { this.props.limitsStore.limits.length ? this.renderSwipeableLimits() : this.renderGreeting() }
             </div>
         );
     }
@@ -55,7 +65,7 @@ class Main extends React.Component {
         return (
             <CustomAppBar
                 leftAddon={ <ArrowLeftIcon /> }
-                rightAddon={ <AddIcon onClick={ this.handleAddIconClick } /> }
+                rightAddon={ <AddIcon onClick={ this.handleCreateButtonClick } /> }
                 title='Лимиты'
             />
         );
@@ -80,51 +90,62 @@ class Main extends React.Component {
         );
     }
 
+    renderGreeting() {
+        return (
+            <div className={ this.props.classes.greeting }>
+                <Typography className={ this.props.classes.greetingText }>
+                    Лимиты - это отличный спосок контролировать свои траты.
+                </Typography>
+                <Button
+                    raised={ true }
+                    color='accent'
+                    className={ this.props.classes.createButton }
+                    onClick={ this.handleCreateButtonClick }
+                >
+                    Создать лимит
+                </Button>
+            </div>
+        );
+    }
+
     renderSwipeableLimits() {
         return (
-            <SwipeableViews
-                index={ this.state.activeTabIndex }
-            >
-                <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
-                <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
-                <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
-            </SwipeableViews>
+            <div className={ this.props.classes.limits }>
+                <SwipeableViews
+                    index={ this.state.activeTabIndex }
+                >
+                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
+                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
+                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
+                </SwipeableViews>
+            </div>
         );
     }
 
     renderLimits() {
+        const { limitsStore: { limits }, transactionsStore: { transactions } } = this.props;
         return (
             <List>
-                { this.props.limitsStore.limits.map(limit => (
+                { limits.map(limit => (
                     <div key={ limit.title }>
                         <ListItem
                             dense={ true }
                             button={ true }
-                            onClick={ () => NavigationController.toLimitScreen(limit.id) }
+                            onClick={ () => NavigationController.toLimitScreen(limit._id) }
                         >
                             <Avatar>{ limit.name[0] }</Avatar>
-                            <ListItemText primary={ limit.name } />
+                            <ListItemText
+                                primary={ limit.name }
+                            />
                         </ListItem>
-                        <LinearProgress mode='determinate' value={ getRandomProgress() } />
+                        <LinearProgress
+                            mode='determinate'
+                            value={ getRandomProgress(limit, transactions) }
+                        />
                         <Divider />
                     </div>
                 )) }
             </List>
-        );
-    }
-
-    renderBottomNavigation() {
-        return (
-            <BottomNavigation
-                showLabels={ true }
-                className={ this.props.classes.bottomNavigation }
-            >
-                { this.props.cardsStore.cards.map(card => (
-                    <BottomNavigationButton
-                        label={ card.CardName }
-                    />
-                )) }
-            </BottomNavigation>
         );
     }
 }

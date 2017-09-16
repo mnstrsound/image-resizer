@@ -42,9 +42,7 @@ class ActionButton extends React.Component {
                             text={ option.text }
                             onClick={ option.handler }
                             onClose={ this.handleRequestClose }
-                        >
-                            { option }
-                        </Option>
+                        />
                     )) }
                 </Menu>
             </div>

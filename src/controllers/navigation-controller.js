@@ -13,6 +13,10 @@ class NavigationController {
         this.routingStore.push('create');
     }
 
+    toEditScreen(id) {
+        this.routingStore.push(`/edit/${id}`);
+    }
+
     toLimitScreen(id) {
         this.routingStore.push(`/limit/${id}`);
     }

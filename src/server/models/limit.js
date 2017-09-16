@@ -1,7 +1,7 @@
 import { getConnection } from '../mongo';
 
 const mongoose = getConnection();
-const  Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const limitSchema = new Schema({
     cardId: String,
@@ -12,4 +12,6 @@ const limitSchema = new Schema({
     calcForDay: Boolean
 });
 
-export default mongoose.model('Limit', limitSchema);
+const LimitModel = mongoose.model('Limit', limitSchema);
+
+export default LimitModel;

@@ -15,7 +15,20 @@ import styles from './styles';
 }))
 @observer
 class Main extends React.Component {
+    handleAmountChange = (e) => {
+        this.props.limit.setAmount(e.target.value);
+    }
+
+    handleCalcForWeekChange = () => {
+        this.props.limit.toggleCalcForWeek();
+    }
+
+    handleCalcForDayChange = () => {
+        this.props.limit.toggleCalcForDay();
+    }
+
     render() {
+        const { limit } = this.props;
         return (
             <div>
                 <TextField
@@ -23,46 +36,35 @@ class Main extends React.Component {
                     label='Введите сумму'
                     helperText='Сумма, которую вы планируете потратить'
                     fullWidth={ true }
+                    value={ limit.amount }
                     onChange={ this.handleAmountChange }
                 />
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={ this.props.createStore.calcForWeek }
+                            checked={ limit.calcForWeek }
                             onChange={ this.handleCalcForWeekChange }
                         />
                     }
                     label='рассчитать на неделю'
                 />
                 <Typography>
-                    { this.props.createStore.calcForWeek && this.props.createStore.amountForWeek }
+                    { limit.calcForWeek && limit.amountForWeek }
                 </Typography>
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={ this.props.createStore.calcForDay }
+                            checked={ limit.calcForDay }
                             onChange={ this.handleCalcForDayChange }
                         />
                     }
                     label='рассчитать на день'
                 />
                 <Typography>
-                    { this.props.createStore.calcForDay && this.props.createStore.amountForDay }
+                    { limit.calcForDay && limit.amountForDay }
                 </Typography>
             </div>
         );
-    }
-
-    handleAmountChange = (e) => {
-        this.props.createStore.setAmount(e.target.value);
-    }
-
-    handleCalcForWeekChange = () => {
-        this.props.createStore.toggleCalcForWeek();
-    }
-
-    handleCalcForDayChange = () => {
-        this.props.createStore.toggleCalcForDay();
     }
 }
 

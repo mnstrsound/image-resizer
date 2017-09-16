@@ -1,27 +1,20 @@
 import { action, observable } from 'mobx';
+
+import LimitsService from '../services/limits-service';
+import NavigationController from '../controllers/navigation-controller';
 import Limit from '../models/limit';
 
 class Limits {
     @observable limits = [];
 
     @action getLimits = () => {
-        const defaultLimits = [
-            {
-                id: 1,
-                cardId: 42,
-                name: 'Первый лимит',
-                calcForDay: false,
-                calcForWeek: false,
-                amount: '',
-                categories: [
-                    { title: 'Питание' },
-                    { title: 'Одежда' }
-                ]
-            }
-        ];
-        defaultLimits.forEach((item) => {
-            this.limits.push(new Limit(item));
+        LimitsService.getLimits().then((limits) => {
+            this.limits = limits.map(limit => new Limit(limit));
         });
+    }
+
+    @action deleteLimit = (id) => {
+        LimitsService.deleteLimit(id).then(() => { NavigationController.toMainScreen(); });
     }
 }
 

@@ -10,19 +10,17 @@ import Avatar from 'material-ui/Avatar';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ createStore, categoriesStore }) => ({
-    createStore,
-    categoriesStore
-}))
+@inject(({ categoriesStore }) => ({ categoriesStore }))
 @observer
-class FirstStep extends React.Component {
+class SelectCategoriesStep extends React.Component {
     render() {
+        const { limit, categoriesStore: { categories } } = this.props;
         return (
             <List>
-                { this.props.categoriesStore.categories.map(category => (
+                { categories.map(category => (
                     <div
-                        key={ category.title }
-                        onClick={ () => { this.props.createStore.toggleCategory(category); } }
+                        key={ category.id }
+                        onClick={ () => { limit.toggleCategoryId(category.id); } }
                     >
                         <ListItem
                             dense={ true }
@@ -30,7 +28,7 @@ class FirstStep extends React.Component {
                         >
                             <Avatar>H</Avatar>
                             <ListItemText primary={ category.title } />
-                            <Checkbox checked={ this.props.createStore.hasCategory(category) } />
+                            <Checkbox checked={ limit.hasCategory(category.id) } />
                         </ListItem>
                         <Divider />
                     </div>
@@ -40,4 +38,4 @@ class FirstStep extends React.Component {
     }
 }
 
-export default FirstStep;
+export default SelectCategoriesStep;

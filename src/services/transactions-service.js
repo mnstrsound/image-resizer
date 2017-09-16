@@ -1,6 +1,6 @@
 import request from '../lib/request';
 
-import CardsService from './cards-service';
+import CardsService from './limits-service';
 
 export default {
     fetchTransactions: async () => {

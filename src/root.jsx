@@ -16,7 +16,7 @@ const Root = ({ stores, history, basename }) => (
             <Switch>
                 <Route exact={ true } path='/' component={ Main } />
                 <Route exact={ true } path='/create' component={ Create } />
-                <Route exact={ true } path='/create/:id' component={ Create } />
+                <Route exact={ true } path='/edit/:id' component={ Create } />
                 <Route exact={ true } path='/limit/:id' component={ Limit } />
             </Switch>
         </Router>
@@ -29,6 +29,5 @@ Root.propTypes = {
     history: Types.shape({}),
     basename: Types.string
 };
-
 
 export default Root;

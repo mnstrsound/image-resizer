@@ -108,8 +108,9 @@ class Main extends React.Component {
         const { limitsStore: { limits }, transactionsStore: { transactions } } = this.props;
         return (
             <List>
-                { limits.map(limit => (
+                { limits.map((limit, index) => (
                     <Limit
+                        key={ index }
                         limit={ limit }
                         transactions={ transactions[limit.cardId] }
                     />

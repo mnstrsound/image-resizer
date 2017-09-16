@@ -8,7 +8,7 @@ import { observer, inject } from 'mobx-react';
 
 import CustomAppBar from '../../components/custom-app-bar';
 import NavigationController from '../../controllers/navigation-controller';
-import Limit from '../../models/limit';
+import LimitModel from '../../models/limit-model';
 
 import SelectCategoriesStep from './select-categories-step';
 import EnterNameStep from './enter-name-step';
@@ -50,7 +50,7 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         const { match: { params: { id } }, limitsStore: { limits } } = props;
-        this.limit = limits.find(limit => limit._id === id) || new Limit();
+        this.limit = limits.find(limit => limit._id === id) || new LimitModel();
         this.steps = [SelectCardStep, SelectCategoriesStep, EnterNameStep, SettingsStep];
     }
 

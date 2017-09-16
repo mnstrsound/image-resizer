@@ -1,6 +1,7 @@
 import { observable, computed, action } from 'mobx';
+import LimitsService from '../services/limits-service';
 
-export default class Limit {
+export default class LimitModel {
     @observable cardId = '';
 
     @observable categoriesIds = [];
@@ -54,26 +55,15 @@ export default class Limit {
         return this.amount / 30;
     }
 
-    @computed get hasCategories() {
-        return this.categoriesIds.length > 0;
-    }
-
     save() {
         const { cardId, categoriesIds, name, amount, calcForWeek, calcForDay } = this;
-        return fetch('/api/limit', {
-            method: 'post',
-            headers: {
-                Accept: 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cardId,
-                categoriesIds,
-                name,
-                amount,
-                calcForWeek,
-                calcForDay
-            })
+        return LimitsService.saveLimit({
+            cardId,
+            categoriesIds,
+            name,
+            amount,
+            calcForWeek,
+            calcForDay
         });
     }
 

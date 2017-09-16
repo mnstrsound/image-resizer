@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-class Cards {
+class CardsStore {
     @observable cards = [];
 
     constructor(cards) {
@@ -8,4 +8,4 @@ class Cards {
     }
 }
 
-export default Cards;
+export default CardsStore;

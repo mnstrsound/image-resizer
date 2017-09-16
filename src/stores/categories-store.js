@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-class Categories {
+class CategoriesStore {
     @observable categories = [];
 
     constructor(categories) {
@@ -8,4 +8,4 @@ class Categories {
     }
 }
 
-export default Categories;
+export default CategoriesStore;

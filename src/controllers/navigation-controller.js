@@ -10,7 +10,7 @@ class NavigationController {
     }
 
     toCreateScreen() {
-        this.routingStore.push('create');
+        this.routingStore.push('/create');
     }
 
     toEditScreen(id) {

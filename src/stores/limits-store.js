@@ -2,9 +2,9 @@ import { action, observable } from 'mobx';
 
 import LimitsService from '../services/limits-service';
 import NavigationController from '../controllers/navigation-controller';
-import Limit from '../models/limit';
+import Limit from '../models/limit-model';
 
-class Limits {
+class LimitsStore {
     @observable limits = [];
 
     @action getLimits = () => {
@@ -18,4 +18,4 @@ class Limits {
     }
 }
 
-export default Limits;
+export default LimitsStore;

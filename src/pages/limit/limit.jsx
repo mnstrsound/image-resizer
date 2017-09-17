@@ -32,6 +32,11 @@ class Limit extends React.Component {
         NavigationController.toEditScreen(id);
     }
 
+    componentWillMount() {
+        const { limitsStore } = this.props;
+        if (!limitsStore.limits.length) limitsStore.getLimits();
+    }
+
     render() {
         const {
             match: { params: { id, period } },
@@ -40,6 +45,7 @@ class Limit extends React.Component {
             transactionsStore: { transactions },
             classes
         } = this.props;
+        if (!limits.length) return null;
         const limit = limits.find(limit => limit._id === id);
         const card = cards[limit.cardId];
         const sortedTransactions = this.getTransactions();

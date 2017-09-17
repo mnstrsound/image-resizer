@@ -30,7 +30,7 @@ class Main extends React.Component {
 
     handleNext = () => {
         if (this.state.activeStep === this.steps.length - 1) {
-            this.limit[this.limit._id ? 'save' : 'update']().then(() => {
+            this.limit[this.limit._id ? 'update' : 'save']().then(() => {
                 NavigationController.toMainScreen();
             });
         } else {

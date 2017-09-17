@@ -19,7 +19,7 @@ router.put('/api/limit/:id', async (ctx) => {
     ctx.body = await new Promise((resolve, reject) => {
         const limit = ctx.request.body;
 
-        Limit.update({ _id: limit.id }, limit, (err, res) => {
+        Limit.update({ _id: limit._id }, limit, (err, res) => {
             if (err) reject(err);
             resolve(res);
         });

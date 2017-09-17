@@ -57,7 +57,7 @@ export default class LimitModel {
 
     update() {
         const { _id, cardId, categoriesIds, name, amount, calcForWeek, calcForDay } = this;
-        return LimitsService.saveLimit({
+        return LimitsService.updateLimit({
             _id,
             cardId,
             categoriesIds,

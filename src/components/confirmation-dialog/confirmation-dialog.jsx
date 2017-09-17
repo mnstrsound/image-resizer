@@ -9,7 +9,7 @@ class ConfirmationDialog extends React.Component {
         /** Заголовок окна */
         title: Types.string,
         /** Контент внутри окна */
-        children: Types.Node,
+        children: Types.node,
         /** Обработчик закрытия */
         onClose: Types.func,
         /** Обработчик подтверждения */

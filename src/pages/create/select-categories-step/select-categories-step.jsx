@@ -14,9 +14,9 @@ import styles from './styles';
 @observer
 class SelectCategoriesStep extends React.Component {
     render() {
-        const { limit, categoriesStore: { categories } } = this.props;
+        const { limit, categoriesStore: { categories }, classes } = this.props;
         return (
-            <List>
+            <List className={ classes.categories }>
                 { categories.map(category => (
                     <div
                         key={ category.id }
@@ -26,7 +26,7 @@ class SelectCategoriesStep extends React.Component {
                             dense={ true }
                             button={ true }
                         >
-                            <Avatar>H</Avatar>
+                            <Avatar className={ classes.categoryAvatar }>{ category.title[0].toUpperCase() }</Avatar>
                             <ListItemText primary={ category.title } />
                             <Checkbox checked={ limit.hasCategory(category.id) } />
                         </ListItem>

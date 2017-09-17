@@ -1,8 +1,21 @@
-import { grey } from 'material-ui/colors';
+import { grey, amber } from 'material-ui/colors';
 
 export default {
     limit: {
-        padding: '56px 12px 0'
+        padding: '154px 12px 0'
+    },
+    limitItem: {
+        height: 98,
+        backgroundColor: amber[100],
+        position: 'fixed',
+        top: 56,
+        left: 0,
+        right: 0,
+        padding: '0 12px'
+    },
+    transactions: {
+        height: 'calc(100vh - 154px)',
+        overflowY: 'auto'
     },
     transactionsGroup: {
         marginTop: 12

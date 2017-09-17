@@ -54,26 +54,30 @@ class Limit extends React.Component {
             <div className={ classes.limit }>
                 { this.renderCustomAppBar() }
                 { this.renderDeleteConfirmationModal() }
-                <LimitItem
-                    period={ period }
-                    limit={ limit }
-                    card={ card }
-                    transactions={ transactions }
-                />
-                { Object.keys(groupedTransactions).map((key, index) => (
-                    <div
-                        key={ index }
-                        className={ classes.transactionsGroup }
-                    >
-                        <Typography className={ classes.transactionsDate }>{ key }</Typography>
-                        { groupedTransactions[key].map((transaction, index) => (
-                            <Transaction
-                                key={ index }
-                                transaction={ transaction }
-                            />
-                        )) }
-                    </div>
-                )) }
+                <div className={ classes.limitItem }>
+                    <LimitItem
+                        period={ period }
+                        limit={ limit }
+                        card={ card }
+                        transactions={ transactions }
+                    />
+                </div>
+                <div className={ classes.transactions }>
+                    { Object.keys(groupedTransactions).map((key, index) => (
+                        <div
+                            key={ index }
+                            className={ classes.transactionsGroup }
+                        >
+                            <Typography className={ classes.transactionsDate }>{ key }</Typography>
+                            { groupedTransactions[key].map((transaction, index) => (
+                                <Transaction
+                                    key={ index }
+                                    transaction={ transaction }
+                                />
+                            )) }
+                        </div>
+                    )) }
+                </div>
             </div>
         );
     }

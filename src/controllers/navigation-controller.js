@@ -17,8 +17,8 @@ class NavigationController {
         this.routingStore.push(`/edit/${id}`);
     }
 
-    toLimitScreen(id) {
-        this.routingStore.push(`/limit/${id}`);
+    toLimitScreen(id, period) {
+        this.routingStore.push(`/limit/${id}/${period}`);
     }
 }
 

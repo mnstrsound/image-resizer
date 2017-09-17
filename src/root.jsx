@@ -16,7 +16,7 @@ const Root = ({ stores, history, basename }) => (
                 <Route exact={ true } path='/' component={ Main } />
                 <Route exact={ true } path='/create' component={ Create } />
                 <Route exact={ true } path='/edit/:id' component={ Create } />
-                <Route exact={ true } path='/limit/:id' component={ Limit } />
+                <Route exact={ true } path='/limit/:id/:period' component={ Limit } />
             </Switch>
         </Router>
     </Provider>

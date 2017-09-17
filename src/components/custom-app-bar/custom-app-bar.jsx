@@ -24,12 +24,13 @@ class CustomAppBar extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
         return (
             <AppBar
                 position='fixed'
             >
-                <Toolbar className={ this.props.classes.toolBar }>
-                    <div className={ this.props.classes.addon }>
+                <Toolbar className={ classes.toolBar }>
+                    <div className={ classes.addon }>
                         { this.props.leftAddon }
                     </div>
                     <Typography
@@ -38,7 +39,7 @@ class CustomAppBar extends React.Component {
                     >
                         { this.props.title }
                     </Typography>
-                    <div className={ this.props.classes.addon }>
+                    <div className={ classes.addon }>
                         { this.props.rightAddon }
                     </div>
                 </Toolbar>

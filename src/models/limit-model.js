@@ -48,11 +48,24 @@ export default class LimitModel {
     }
 
     @computed get amountForWeek() {
-        return (this.amount / 30) * 7;
+        return ((this.amount / 30) * 7).toFixed(2);
     }
 
     @computed get amountForDay() {
-        return this.amount / 30;
+        return (this.amount / 30).toFixed(2);
+    }
+
+    update() {
+        const { _id, cardId, categoriesIds, name, amount, calcForWeek, calcForDay } = this;
+        return LimitsService.saveLimit({
+            _id,
+            cardId,
+            categoriesIds,
+            name,
+            amount,
+            calcForWeek,
+            calcForDay
+        });
     }
 
     save() {

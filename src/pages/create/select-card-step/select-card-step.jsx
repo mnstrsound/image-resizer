@@ -12,10 +12,10 @@ import styles from './styles';
 @observer
 class SelectCardStep extends React.Component {
     render() {
-        const { limit: { cardId }, cardsStore: { cards } } = this.props;
+        const { limit: { cardId }, cardsStore: { cards }, classes } = this.props;
         return (
             <div>
-                <Typography className={ this.props.classes.text }>
+                <Typography className={ classes.text }>
                     Выберите карту
                 </Typography>
                 { Object.keys(cards).map(key => (
@@ -23,7 +23,7 @@ class SelectCardStep extends React.Component {
                         key={ cards[key].CardId }
                         raised={ true }
                         color={ cardId === cards[key].CardId ? 'accent' : 'primary' }
-                        className={ this.props.classes.button }
+                        className={ classes.button }
                         onClick={ () => { this.handleButtonClick(cards[key].CardId); } }
                     >
                         { cards[key].CardName }

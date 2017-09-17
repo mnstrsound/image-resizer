@@ -1,11 +1,25 @@
-
-
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * max) + min;
 }
 
 function addZero(number) {
-    return number < 10 ? `0${number}` : number;
+    return number < 10 ? `0${number}` : number.toString();
+}
+
+function getDate() {
+    const today = new Date();
+    const day = addZero(today.getDate());
+    const month = addZero(today.getMonth() + 1);
+    const year = addZero(today.getFullYear());
+    let weekDay = today.getDay();
+    weekDay = weekDay > 0 ? weekDay + 1 : 7;
+
+    return {
+        day,
+        month,
+        year,
+        weekDay
+    };
 }
 
 function generateTransactionDate() {
@@ -33,7 +47,7 @@ export function generateTransactions() {
     for (let i = 0; i < transactionsCount; i++) {
         transactions.push({
             TransactionDate: generateTransactionDate(),
-            TransactionSum: -getRandomNumber(100, 1000),
+            TransactionSum: -getRandomNumber(50, 500),
             TransactionPlace: transactionPlaces[getRandomNumber(0, transactionPlaces.length)],
             TransactionCur: 'RUB'
         });
@@ -42,11 +56,25 @@ export function generateTransactions() {
     return transactions;
 }
 
+export function getPeriodByIndex(index) {
+    let period;
+    switch (index) {
+        case 0:
+            period = 'day';
+            break;
+        case 1:
+            period = 'week';
+            break;
+        case 2:
+            period = 'month';
+            break;
+    }
+
+    return period;
+}
+
 export function getDayTransactions(transactions) {
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
+    const { day, month, year } = getDate();
 
     return transactions.filter((transaction) => {
         const [transactionDay, transactionMonth, transactionYear] = transaction.TransactionDate.split('.');
@@ -56,12 +84,8 @@ export function getDayTransactions(transactions) {
     });
 }
 
-export function getWeeyTransactions(transactions) {
-    const today = new Date();
-    const day = today.getDate();
-    const weekDay = today.getDay();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
+export function getWeekTransactions(transactions) {
+    const { day, month, year, weekDay } = getDate();
 
     return transactions.filter((transaction) => {
         const [transactionDay, transactionMonth, transactionYear] = transaction.TransactionDate.split('.');
@@ -73,15 +97,29 @@ export function getWeeyTransactions(transactions) {
 }
 
 export function getMonthTransactions(transactions) {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
+    const { month, year } = getDate();
 
     return transactions.filter((transaction) => {
         const [transactionDay, transactionMonth, transactionYear] = transaction.TransactionDate.split('.');
         return transactionMonth === month
             && transactionYear === year;
     });
+}
+
+export function getTransactionsByPeriod(transactions, period) {
+    let resultTransactions;
+    switch (period) {
+        case 'month':
+            resultTransactions = getMonthTransactions(transactions);
+            break;
+        case 'week':
+            resultTransactions = getWeekTransactions(transactions);
+            break;
+        case 'day':
+            resultTransactions = getDayTransactions(transactions);
+            break;
+    }
+    return resultTransactions;
 }
 
 export function getTransactionsTotalSum(transactions) {

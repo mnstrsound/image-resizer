@@ -16,7 +16,6 @@ export default () => (
 
                     // Цепляем к транзакции категорию
                     transactions = transactions.map((transaction) => {
-                        console.log(transaction);
                         const category = Categories.find(category => (
                             category.pattern.test(transaction.TransactionPlace)
                         ));

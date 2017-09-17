@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { withStyles } from 'material-ui/styles';
-import { ListItem, ListItemText } from 'material-ui/List';
+import { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Typography from 'material-ui/Typography';
 
@@ -11,7 +11,7 @@ import styles from './styles';
 @withStyles(styles)
 class Transaction extends React.Component {
     render() {
-        const { transaction } = this.props;
+        const { transaction, classes } = this.props;
         const category = Categories.find(category => category.id === transaction.categoryId);
         return (
             <div>
@@ -19,15 +19,19 @@ class Transaction extends React.Component {
                     dense={ true }
                     button={ true }
                 >
-                    <Avatar>{ transaction.TransactionPlace[0] }</Avatar>
+                    <Avatar className={ classes.transactionAvatar } >
+                        { transaction.TransactionPlace[0].toUpperCase() }
+                    </Avatar>
                     <ListItemText
                         primary={ transaction.TransactionPlace }
                         secondary={ category.title }
                     />
+                    <ListItemSecondaryAction>
+                        <Typography className={ classes.transactionSum }>
+                            { transaction.TransactionSum } ₽
+                        </Typography>
+                    </ListItemSecondaryAction>
                 </ListItem>
-                <Typography>
-                    Потрачено: { transaction.TransactionSum }
-                </Typography>
             </div>
         );
     }

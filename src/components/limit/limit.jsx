@@ -7,33 +7,49 @@ import Avatar from 'material-ui/Avatar';
 import { LinearProgress } from 'material-ui/Progress';
 import Typography from 'material-ui/Typography';
 
-import NavigationController from '../../controllers/navigation-controller';
+import { getTransactionsByPeriod, getTransactionsTotalSum } from '../../utils/helpers';
 import styles from './styles';
 
 @withStyles(styles)
 class Limit extends React.Component {
+    handleClick = () => {
+        const { limit, onClick } = this.props;
+        if (onClick) onClick(limit._id);
+    }
+
     render() {
-        const { limit, card, spendingSum } = this.props;
+        const { limit, card, transactions, period, classes } = this.props;
+        let amount;
+        if (period === 'month') amount = limit.amount;
+        if (period === 'week') amount = limit.amountForWeek;
+        if (period === 'day') amount = limit.amountForDay;
+
+        const spendingSum = getTransactionsTotalSum(
+            getTransactionsByPeriod(transactions[limit.cardId].filter(
+                transaction => limit.categoriesIds.includes(transaction.categoryId)
+            ), period)
+        );
 
         return (
             <div>
                 <ListItem
                     dense={ true }
                     button={ true }
-                    onClick={ () => NavigationController.toLimitScreen(limit._id) }
+                    onClick={ this.handleClick }
                 >
-                    <Avatar>{ limit.name[0] }</Avatar>
+                    <Avatar className={ classes.limitAvatar }>{ limit.name[0].toUpperCase() }</Avatar>
                     <ListItemText
                         primary={ limit.name }
                         secondary={ card.CardName }
                     />
                 </ListItem>
                 <Typography>
-                    Потрачено: { spendingSum } / { limit.amount }
+                    Потрачено: { spendingSum } / { amount } ₽
                 </Typography>
                 <LinearProgress
                     mode='determinate'
-                    value={ (spendingSum / this.props.limit.amount) * 100 }
+                    value={ (spendingSum / amount) * 100 }
+                    className={ classes.limitProgress }
                 />
                 <Divider />
             </div>

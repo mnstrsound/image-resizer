@@ -30,7 +30,7 @@ class Main extends React.Component {
 
     handleNext = () => {
         if (this.state.activeStep === this.steps.length - 1) {
-            this.limit.save().then(() => {
+            this.limit[this.limit._id ? 'save' : 'update']().then(() => {
                 NavigationController.toMainScreen();
             });
         } else {
@@ -54,8 +54,9 @@ class Main extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
-            <div className={ this.props.classes.createStore }>
+            <div className={ classes.createStore }>
                 { this.renderCustomAppBar() }
                 { this.renderSteps() }
                 { this.renderStepper() }
@@ -93,10 +94,11 @@ class Main extends React.Component {
     }
 
     renderSteps() {
+        const { classes } = this.props;
         return this.steps.map((Component, index) => (
             <div
                 key={ index }
-                className={ this.state.activeStep !== index && this.props.classes.hidden }
+                className={ this.state.activeStep !== index && classes.hidden }
             >
                 <Component limit={ this.limit } />
             </div>

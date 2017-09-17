@@ -12,7 +12,7 @@ import AddIcon from 'material-ui-icons/Add';
 
 import NavigationController from '../../controllers/navigation-controller';
 import CustomAppBar from '../../components/custom-app-bar';
-import { getTransactionsTotalSum } from '../../utils/helpers';
+import { getPeriodByIndex } from '../../utils/helpers';
 import styles from './styles';
 import Limit from '../../components/limit';
 
@@ -32,13 +32,28 @@ class Main extends React.Component {
         NavigationController.toCreateScreen();
     }
 
+    handleLimitClick = (id) => {
+        const { activeTabIndex } = this.state;
+        let period = 'month';
+        switch (activeTabIndex) {
+            case 0:
+                period = 'day';
+                break;
+            case 1:
+                period = 'week';
+                break;
+        }
+        NavigationController.toLimitScreen(id, period);
+    }
+
     componentWillMount() {
         this.props.limitsStore.getLimits();
     }
 
     render() {
+        const { classes } = this.props;
         return (
-            <div className={ this.props.classes.main }>
+            <div className={ classes.main }>
                 { this.renderCustomAppBar() }
                 { this.props.limitsStore.limits.length > 0 && this.renderTabs() }
                 { this.props.limitsStore.limits.length ? this.renderSwipeableLimits() : this.renderGreeting() }
@@ -56,8 +71,9 @@ class Main extends React.Component {
     }
 
     renderTabs() {
+        const { classes } = this.props;
         return (
-            <AppBar className={ this.props.classes.bar }>
+            <AppBar className={ classes.bar }>
                 <Tabs
                     value={ this.state.activeTabIndex }
                     onChange={ (e, index) => { this.setState({ activeTabIndex: index }); } }
@@ -75,15 +91,16 @@ class Main extends React.Component {
     }
 
     renderGreeting() {
+        const { classes } = this.props;
         return (
-            <div className={ this.props.classes.greeting }>
-                <Typography className={ this.props.classes.greetingText }>
+            <div className={ classes.greeting }>
+                <Typography className={ classes.greetingText }>
                     Лимиты - это отличный спосок контролировать свои траты.
                 </Typography>
                 <Button
                     raised={ true }
                     color='accent'
-                    className={ this.props.classes.createButton }
+                    className={ classes.createButton }
                     onClick={ this.handleCreateButtonClick }
                 >
                     Создать лимит
@@ -93,14 +110,15 @@ class Main extends React.Component {
     }
 
     renderSwipeableLimits() {
+        const { classes } = this.props;
         return (
-            <div className={ this.props.classes.limits }>
+            <div className={ classes.limits }>
                 <SwipeableViews
                     index={ this.state.activeTabIndex }
                 >
-                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
-                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
-                    <div className={ this.props.classes.tabContainer }>{ this.renderLimits() }</div>
+                    <div className={ classes.tabContainer }>{ this.renderLimits() }</div>
+                    <div className={ classes.tabContainer }>{ this.renderLimits() }</div>
+                    <div className={ classes.tabContainer }>{ this.renderLimits() }</div>
                 </SwipeableViews>
             </div>
         );
@@ -112,15 +130,18 @@ class Main extends React.Component {
             transactionsStore: { transactions },
             cardsStore: { cards }
         } = this.props;
+        const period = getPeriodByIndex(this.state.activeTabIndex);
 
         return (
             <List>
                 { limits.map((limit, index) => (
                     <Limit
                         key={ index }
+                        period={ period }
+                        transactions={ transactions }
                         limit={ limit }
                         card={ cards[limit.cardId] }
-                        spendingSum={ getTransactionsTotalSum(transactions[limit.cardId]) }
+                        onClick={ this.handleLimitClick }
                     />
                 )) }
             </List>

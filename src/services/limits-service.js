@@ -7,5 +7,12 @@ export default {
         headers: {
             'Content-Type': 'application/json'
         }
+    }).then(res => res.json()),
+    updateLimit: limit => fetch(`/api/limit/${limit._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(limit),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     }).then(res => res.json())
 };

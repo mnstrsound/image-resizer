@@ -12,11 +12,16 @@ export default [
     {
         title: 'Кафе',
         id: 3,
-        pattern: /кофейня/i
+        pattern: /кофейня|кафе/i
     },
     {
         title: 'Магазины',
         id: 4,
         pattern: /магазин/i
+    },
+    {
+        title: 'Рестораны',
+        id: 5,
+        pattern: /ресторан/i
     }
 ];

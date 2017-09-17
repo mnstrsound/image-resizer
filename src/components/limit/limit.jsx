@@ -13,9 +13,7 @@ import styles from './styles';
 @withStyles(styles)
 class Limit extends React.Component {
     render() {
-        const { limit } = this.props;
-        const spendingTransactionsSum = this.getSpendingTransactionsSum();
-        const progress = this.getProgress(spendingTransactionsSum);
+        const { limit, card, spendingSum } = this.props;
 
         return (
             <div>
@@ -27,33 +25,19 @@ class Limit extends React.Component {
                     <Avatar>{ limit.name[0] }</Avatar>
                     <ListItemText
                         primary={ limit.name }
+                        secondary={ card.CardName }
                     />
                 </ListItem>
                 <Typography>
-                    Потрачено: { spendingTransactionsSum } / { limit.amount }
+                    Потрачено: { spendingSum } / { limit.amount }
                 </Typography>
                 <LinearProgress
                     mode='determinate'
-                    value={ progress }
+                    value={ (spendingSum / this.props.limit.amount) * 100 }
                 />
                 <Divider />
             </div>
         );
-    }
-
-    getSpendingTransactionsSum() {
-        const { limit: { categoriesIds }, transactions } = this.props;
-        return transactions.reduce((acc, transaction) => {
-            if (categoriesIds.includes(transaction.categoryId) && transaction.TransactionSum < 0) {
-                acc -= transaction.TransactionSum;
-            }
-
-            return acc;
-        }, 0);
-    }
-
-    getProgress(spendingTransactionsSum) {
-        return (spendingTransactionsSum / this.props.limit.amount) * 100;
     }
 }
 

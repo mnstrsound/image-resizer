@@ -18,9 +18,8 @@ import SelectCardStep from './select-card-step';
 import styles from './styles';
 
 @withStyles(styles)
-@inject(({ limitsStore, cardsStore }) => ({
-    limitsStore,
-    cardsStore
+@inject(({ limitsStore }) => ({
+    limitsStore
 }))
 @observer
 class Main extends React.Component {

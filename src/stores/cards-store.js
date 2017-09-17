@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 
 class CardsStore {
-    @observable cards = [];
+    @observable cards = {};
 
     constructor(cards) {
         this.cards = cards;

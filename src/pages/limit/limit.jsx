@@ -11,6 +11,7 @@ import ConfirmationDialog from '../../components/confirmation-dialog';
 import LimitItem from '../../components/limit';
 import Transaction from '../../components/transaction';
 import NavigationController from '../../controllers/navigation-controller';
+import { getTransactionsTotalSum } from '../../utils/helpers';
 
 import styles from './styles';
 
@@ -35,11 +36,18 @@ class Limit extends React.Component {
         const {
             match: { params: { id } },
             limitsStore: { limits },
-            cardsStore: { cards },
-            transactionsStore: { transactions }
+            cardsStore: { cards }
         } = this.props;
-        const limit = limits.find(item => item._id === id);
-        const card = cards.find(card => card.CardId === limit.cardId);
+        const limit = limits.find(limit => limit._id === id);
+        const card = cards[limit.cardId];
+        const transactions = this.getTransactions();
+        const groupedTransactions = transactions
+            .reduce((acc, transaction) => {
+                if (!acc[transaction.TransactionDate]) acc[transaction.TransactionDate] = [];
+                acc[transaction.TransactionDate].push(transaction);
+                return acc;
+            }, {});
+        const transactionsSum = getTransactionsTotalSum(transactions);
 
         return (
             <div className={ this.props.classes.limit }>
@@ -47,13 +55,19 @@ class Limit extends React.Component {
                 { this.renderDeleteConfirmationModal() }
                 <LimitItem
                     limit={ limit }
-                    transactions={ transactions[limit.cardId] }
+                    card={ card }
+                    spendingSum={ transactionsSum }
                 />
-                { transactions[limit.cardId].map((transaction, index) => (
-                    <Transaction
-                        key={ index }
-                        transaction={ transaction }
-                    />
+                { Object.keys(groupedTransactions).map(key => (
+                    <div>
+                        <Typography>{ key }</Typography>
+                        { groupedTransactions[key].map((transaction, index) => (
+                            <Transaction
+                                key={ index }
+                                transaction={ transaction }
+                            />
+                        )) }
+                    </div>
                 )) }
             </div>
         );
@@ -85,6 +99,24 @@ class Limit extends React.Component {
                 title='Лимит'
             />
         );
+    }
+
+    getTransactions() {
+        const {
+            match: { params: { id } },
+            limitsStore: { limits },
+            transactionsStore: { transactions }
+        } = this.props;
+        const limit = limits.find(limit => limit._id === id);
+
+        return transactions[limit.cardId]
+            .filter(transaction => limit.categoriesIds.includes(transaction.categoryId))
+            .sort((prevTransaction, nextTransaction) => {
+                let result = 0;
+                if (prevTransaction.TransactionDate < nextTransaction.TransactionDate) result = 1;
+                if (prevTransaction.TransactionDate > nextTransaction.TransactionDate) result = -1;
+                return result;
+            });
     }
 }
 

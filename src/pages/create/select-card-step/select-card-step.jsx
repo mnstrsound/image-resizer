@@ -18,15 +18,15 @@ class SelectCardStep extends React.Component {
                 <Typography className={ this.props.classes.text }>
                     Выберите карту
                 </Typography>
-                { cards.map(card => (
+                { Object.keys(cards).map(key => (
                     <Button
-                        key={ card.CardId }
+                        key={ cards[key].CardId }
                         raised={ true }
-                        color={ cardId === card.CardId ? 'accent' : 'primary' }
+                        color={ cardId === cards[key].CardId ? 'accent' : 'primary' }
                         className={ this.props.classes.button }
-                        onClick={ () => { this.handleButtonClick(card.CardId); } }
+                        onClick={ () => { this.handleButtonClick(cards[key].CardId); } }
                     >
-                        { card.CardName }
+                        { cards[key].CardName }
                     </Button>
                 )) }
             </div>

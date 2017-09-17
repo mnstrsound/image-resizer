@@ -12,13 +12,15 @@ import AddIcon from 'material-ui-icons/Add';
 
 import NavigationController from '../../controllers/navigation-controller';
 import CustomAppBar from '../../components/custom-app-bar';
+import { getTransactionsTotalSum } from '../../utils/helpers';
 import styles from './styles';
 import Limit from '../../components/limit';
 
 @withStyles(styles)
-@inject(({ limitsStore, transactionsStore }) => ({
+@inject(({ limitsStore, transactionsStore, cardsStore }) => ({
     limitsStore,
-    transactionsStore
+    transactionsStore,
+    cardsStore
 }))
 @observer
 class Main extends React.Component {
@@ -105,14 +107,20 @@ class Main extends React.Component {
     }
 
     renderLimits() {
-        const { limitsStore: { limits }, transactionsStore: { transactions } } = this.props;
+        const {
+            limitsStore: { limits },
+            transactionsStore: { transactions },
+            cardsStore: { cards }
+        } = this.props;
+
         return (
             <List>
                 { limits.map((limit, index) => (
                     <Limit
                         key={ index }
                         limit={ limit }
-                        transactions={ transactions[limit.cardId] }
+                        card={ cards[limit.cardId] }
+                        spendingSum={ getTransactionsTotalSum(transactions[limit.cardId]) }
                     />
                 )) }
             </List>

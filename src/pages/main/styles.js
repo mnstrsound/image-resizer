@@ -6,7 +6,8 @@ export default {
         position: 'fixed',
         top: 56,
         left: 0,
-        right: 0
+        right: 0,
+        boxShadow: '0 3px 3px rgba(0,0,0,.2)'
     },
     tabContainer: {
         padding: '0 12px'

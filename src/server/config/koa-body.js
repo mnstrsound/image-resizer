@@ -1,6 +1,8 @@
+import paths from './paths';
+
 export default {
     formidable: {
-        uploadDir: './upload',
+        uploadDir: paths.uploadDir,
         keepExtensions: true
     },
     multipart: true

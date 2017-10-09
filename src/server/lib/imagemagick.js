@@ -1,10 +1,11 @@
 import im from 'node-imagemagick';
-
+import path from 'path';
 
 export default class ImageMagick {
-    static resize(file, index, settings) {
+    static resize(file, index, dir, settings) {
         const { width, height } = settings;
         const size = `${width}x${height}^`;
+        const filePath = path.join(dir, `${index}.jpg`);
 
         return new Promise((resolve, reject) => {
             im.convert(
@@ -13,7 +14,7 @@ export default class ImageMagick {
                     '-resize', size,
                     '-gravity', 'center',
                     '-crop', `${size}+0+0`,
-                    `./convert/kittens-small${index}.jpg`
+                    filePath
                 ], (err, stdout) => {
                     if (err) reject(err);
                     else resolve(stdout);
@@ -21,9 +22,9 @@ export default class ImageMagick {
         });
     }
 
-    static resizeAll(files, settings) {
+    static resizeAll(files, dir, settings) {
         return Promise.all(
-            files.map((file, index) => this.resize(file, index, settings))
+            files.map((file, index) => this.resize(file, index, dir, settings))
         );
     }
 }

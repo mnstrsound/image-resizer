@@ -1,47 +1,20 @@
 import Router from 'koa-router';
 
-import Limit from './models/limit';
+import ImageMagick from './lib/imagemagick';
+import zip from './lib/zip';
 
 const router = new Router();
 
-router.post('/api/limit', async (ctx) => {
-    ctx.body = await new Promise((resolve, reject) => {
-        const limit = new Limit(ctx.request.body);
+router.post('/api/images', async (ctx) => {
+    const settings = JSON.parse(ctx.request.body.fields.settings);
+    const { files } = ctx.request.body;
 
-        limit.save((err, res) => {
-            if (err) reject(err);
-            resolve(res);
-        });
-    });
-});
+    ImageMagick.resizeAll(
+        Object.keys(files).map(key => files[key].path),
+        settings
+    ).then(() => zip());
 
-router.put('/api/limit/:id', async (ctx) => {
-    ctx.body = await new Promise((resolve, reject) => {
-        const limit = ctx.request.body;
-
-        Limit.update({ _id: limit._id }, limit, (err, res) => {
-            if (err) reject(err);
-            resolve(res);
-        });
-    });
-});
-
-router.get('/api/limit', async (ctx) => {
-    ctx.body = await new Promise((resolve, reject) => {
-        Limit.find({}, (err, res) => {
-            if (err) reject(err);
-            resolve(res);
-        });
-    });
-});
-
-router.delete('/api/limit/:id', async (ctx) => {
-    ctx.body = await new Promise((resolve, reject) => {
-        Limit.remove({ _id: ctx.params.id }, (err, res) => {
-            if (err) reject(err);
-            resolve(res);
-        });
-    });
+    ctx.body = true;
 });
 
 export function routes() { return router.routes(); }

@@ -1,0 +1,21 @@
+.select-watermark {
+    width: 90px !important;
+    height: 90px;
+    border: 1px dashed #ccc;
+    display: flex;
+    cursor: pointer;
+
+    span {
+        margin: auto;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+    }
+
+    input {
+        display: none;
+    }
+}

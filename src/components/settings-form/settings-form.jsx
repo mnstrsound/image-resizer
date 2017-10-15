@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import cn from 'arui-feather/cn';
 
+import SelectWatermark from '../../components/select-watermark';
 import SettingsModel from '../../models/settings';
 import ImageFormats from '../../constants/image-formats';
 import WatermarkPositions from '../../constants/watermark-positions';
@@ -124,6 +125,7 @@ export default class SettingsForm extends React.Component {
                     <label>
                         Ватермарка
                     </label>
+                    <SelectWatermark />
                     <input
                         type='file'
                         onChange={ this.handleWatermarkImageChange }

@@ -1,5 +1,5 @@
 .settings-form {
-    max-width: 222px;
+    max-width: 232px;
     margin: 0 auto;
     padding: 10px 10px 0;
     border: 1px solid #eee;
@@ -10,7 +10,7 @@
         margin-bottom: 10px;
 
         label {
-            width: 100px;
+            width: 110px;
             float: left;
             text-align: right;
         }

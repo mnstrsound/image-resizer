@@ -12,15 +12,17 @@ class Main extends React.Component {
         this.setState({ files });
     }
 
-    handleSettingsFormSubmit = (values) => {
+    handleSettingsFormSubmit = ({ watermark: { image: watermarkImage, ...watermark }, ...values }) => {
         const { files } = this.state;
         const formData = new FormData();
 
-        formData.append('settings', JSON.stringify(values));
+        formData.append('settings', JSON.stringify({ ...values, watermark }));
 
         Array.prototype.forEach.call(files, (file, index) => {
             formData.append(`file${index}`, file);
         });
+
+        if (watermarkImage) formData.append('watermark', watermarkImage);
 
         fetch('/api/images', {
             method: 'POST',

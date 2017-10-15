@@ -5,6 +5,8 @@ import { Route } from 'react-router-dom';
 
 import 'arui-feather/main.css';
 
+import './root.css';
+
 import Main from './pages/main';
 
 const Root = ({ stores, history, basename }) => (

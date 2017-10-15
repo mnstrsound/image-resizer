@@ -1,19 +1,62 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import cn from 'arui-feather/cn';
+
 import SettingsModel from '../../models/settings';
 
+import './settings-form.css';
+
+@cn('settings-form')
+@observer
 export default class SettingsForm extends React.Component {
-    handleWidthChange = (e) => {
+    handleResizeWidthChange = (e) => {
         const { settings } = this;
         const { target: { value } } = e;
 
-        settings.setWidth(value);
+        settings.setResizeWidth(value);
     }
 
-    handleHeightChange = (e) => {
+    handleResizeHeightChange = (e) => {
         const { settings } = this;
         const { target: { value } } = e;
 
-        settings.setHeight(value);
+        settings.setResizeHeight(value);
+    }
+
+    handleWatermarkImageChange = (e) => {
+        const { settings } = this;
+        const { target: { files } } = e;
+
+        settings.setWatermarkImage(files[0] || null);
+    }
+
+    handleWatermarkOpacityChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setWatermarkOpacity(value);
+    }
+
+    handleNamingPrefixChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setNamingPrefix(value);
+    }
+
+    handleNamingIndexationChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setNamingIndexation(value);
+    }
+
+
+    handleNamingFormat = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setNamingFormat(value);
     }
 
     handleFormSubmit = (e) => {
@@ -21,7 +64,7 @@ export default class SettingsForm extends React.Component {
 
         const { onSubmit } = this.props;
 
-        if (onSubmit) onSubmit(this.settings);
+        if (onSubmit) onSubmit(this.settings.values);
     }
 
     constructor(props) {
@@ -29,26 +72,86 @@ export default class SettingsForm extends React.Component {
         this.settings = new SettingsModel();
     }
 
-    render() {
+    render(cn) {
         return (
-            <form>
-                <label>Ширина</label>
-                <input
-                    type='text'
-                    placeholder='Ширина'
-                    onChange={ this.handleWidthChange }
-                />
-                <label>Высота</label>
-                <input
-                    type='text'
-                    placeholder='Высота'
-                    onChange={ this.handleHeightChange }
-                />
-                <button
-                    onClick={ this.handleFormSubmit }
-                >
-                    Применить
-                </button>
+            <form className={ cn }>
+                <fieldset>
+                    <label htmlFor='width'>Ширина (px)</label>
+                    <input
+                        id='width'
+                        type='number'
+                        value={ this.settings.resize.width }
+                        onChange={ this.handleResizeWidthChange }
+                    />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor='height'>Высота (px)</label>
+                    <input
+                        id='height'
+                        type='number'
+                        value={ this.settings.resize.height }
+                        onChange={ this.handleResizeHeightChange }
+                    />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor='watermark'>
+                        Ватермарка
+                    </label>
+                    <input
+                        id='watermark'
+                        type='file'
+                        onChange={ this.handleWatermarkImageChange }
+                    />
+                </fieldset>
+                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
+                    <label htmlFor='opacity'>Прозрачность (%)</label>
+                    <input
+                        id='opacity'
+                        type='number'
+                        value={ this.settings.watermark.opacity }
+                        onChange={ this.handleWatermarkOpacityChange }
+                    />
+                </fieldset>
+                <fieldset>
+                    <label>
+                        Префикс
+                    </label>
+                    <input
+                        id='prefix'
+                        type='text'
+                        name='prefix'
+                        value={ this.settings.prefix }
+                        onChange={ this.handleNamingPrefixChange }
+                    />
+                </fieldset>
+                <fieldset>
+                    <label>
+                        Индексация c
+                    </label>
+                    <input
+                        id='start_index'
+                        type='number'
+                        value={ this.settings.indexation }
+                        onChange={ this.handleNamingIndexationChange }
+                    />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor='format'>Формат</label>
+                    <select
+                        id='format'
+                        onChange={ this.handleNamingFormat }
+                    >
+                        <option value='jpg'>JPG</option>
+                        <option value='png'>PNG</option>
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <button
+                        onClick={ this.handleFormSubmit }
+                    >
+                        Применить
+                    </button>
+                </fieldset>
             </form>
         );
     }

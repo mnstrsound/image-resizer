@@ -1,19 +1,22 @@
 import { observable, computed, action } from 'mobx';
 
+import defaultSettings from '../../config/default-settings';
+
 export default class SettingsModel {
     @observable resize = {
-        width: 0,
-        height: 0
+        width: defaultSettings.resize.width,
+        height: defaultSettings.resize.height
     }
 
     @observable naming = {
-        indexation: 0,
-        prefix: ''
+        prefix: defaultSettings.naming.prefix,
+        indexation: defaultSettings.naming.indexation
     }
 s
     @observable watermark = {
-        image: null,
-        opacity: 50
+        image: defaultSettings.watermark.image,
+        opacity: defaultSettings.watermark.opacity,
+        format: defaultSettings.watermark.format
     }
 
     @observable format;

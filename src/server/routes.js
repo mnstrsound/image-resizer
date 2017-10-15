@@ -8,30 +8,26 @@ import tempDir from './lib/temp-dir';
 const router = new Router();
 
 router.post('/api/images', async (ctx) => {
-    const dir = tempDir();
-    const { resize, watermark, naming } = JSON.parse(ctx.request.body.fields.settings);
+    const {
+        resize: resizeSettings,
+        watermark: watermarkSettings,
+        naming: namingSettings
+    } = JSON.parse(ctx.request.body.fields.settings);
     const { files: { watermark: watermarkImage, ...files } } = ctx.request.body;
-    const toProcessFiles = Object.keys(files).map(key => files[key].path);
-    let processedFiles;
+    const filesPaths = Object.keys(files).map(key => files[key].path);
+    const watermarkPath = watermarkImage ? watermarkImage.path : undefined;
+    const dir = tempDir();
 
     await mkdirp(dir);
 
-    processedFiles = await ImageMagick.resizeAll(
-        toProcessFiles,
-        resize,
-        naming,
+    await ImageMagick.requestAll(
+        filesPaths,
+        resizeSettings,
+        watermarkPath,
+        watermarkSettings,
+        namingSettings,
         dir
-    );
-
-    if (watermarkImage) {
-        await ImageMagick.watermarkAll(
-            processedFiles,
-            watermarkImage.path,
-            watermark,
-            naming,
-            dir
-        );
-    }
+    ).catch(e => { console.log(e); });
 
     ctx.body = await zip(dir);
 });

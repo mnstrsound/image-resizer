@@ -2,56 +2,42 @@ import { exec } from 'child_process';
 import path from 'path';
 
 export default class ImageMagick {
-    static resize(file, size, filePath) {
-        return new Promise((resolve, reject) => {
-            exec(`convert ${file} \
-                -resize ${size} \
+    static request(filePath, fileOptions, watermarkPath, watermarkOptions, fileDest) {
+        const { width, height } = fileOptions;
+        const { opacity } = watermarkOptions;
+        const size = `${width}x${height}`;
+
+        let execString = `convert \\( ${filePath} -resize ${size}^ -gravity center -crop ${size}+0+0 \\) \\`;
+
+        if (watermarkPath) {
+            execString += `
+                \\( ${watermarkPath} -resize ${size}! \\) \
+                -compose dissolve \
+                -define compose:args='${opacity},100' \
                 -gravity center \
-                -crop ${size}+0+0 \
-                ${filePath}`,
-            (err) => {
-                if (err) reject({ err, file });
-                resolve(filePath);
-            });
-        });
-    }
+                -composite \
+            `;
+        }
 
-    static resizeAll(files, { width, height }, { prefix, indexation, format }, dir) {
-        const size = `${width}x${height}^`;
+        execString += `${fileDest}`;
 
-        return Promise.all(
-            files.map(
-                (file, index) => ImageMagick.resize(
-                    file,
-                    size,
-                    path.join(dir, `${prefix}${Number(indexation) + index}.${format}`)
-                )
-            )
-        );
-    }
-
-    static watermark(file, watermarkPath, { opacity }, filePath) {
         return new Promise((resolve, reject) => {
-            exec(`composite \
-                -dissolve ${opacity}% \
-                -gravity center \
-                ${watermarkPath} \
-                ${file} \
-                ${filePath}`,
-            (err) => {
+            exec(execString, (err) => {
                 if (err) reject(err);
                 resolve(filePath);
             });
         });
     }
 
-    static watermarkAll(files, watermarkPath, options, { prefix, indexation, format }, dir) {
+    static requestAll(filesPaths, resizeSettings, watermarkPath, watermarkSettings, namingSettings, dir) {
+        const { prefix, indexation, format } = namingSettings;
         return Promise.all(
-            files.map(
-                (file, index) => ImageMagick.watermark(
-                    file,
+            filesPaths.map(
+                (filePath, index) => ImageMagick.request(
+                    filePath,
+                    resizeSettings,
                     watermarkPath,
-                    options,
+                    watermarkSettings,
                     path.join(dir, `${prefix}${Number(indexation) + index}.${format}`)
                 )
             )

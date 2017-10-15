@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import cn from 'arui-feather/cn';
 
 import SettingsModel from '../../models/settings';
+import ImageFormats from '../../constants/image-formats';
 
 import './settings-form.css';
 
@@ -120,7 +121,7 @@ export default class SettingsForm extends React.Component {
                         id='prefix'
                         type='text'
                         name='prefix'
-                        value={ this.settings.prefix }
+                        value={ this.settings.naming.prefix }
                         onChange={ this.handleNamingPrefixChange }
                     />
                 </fieldset>
@@ -131,7 +132,7 @@ export default class SettingsForm extends React.Component {
                     <input
                         id='start_index'
                         type='number'
-                        value={ this.settings.indexation }
+                        value={ this.settings.naming.indexation }
                         onChange={ this.handleNamingIndexationChange }
                     />
                 </fieldset>
@@ -139,10 +140,19 @@ export default class SettingsForm extends React.Component {
                     <label htmlFor='format'>Формат</label>
                     <select
                         id='format'
+                        value={ this.settings.naming.format }
                         onChange={ this.handleNamingFormat }
                     >
-                        <option value='jpg'>JPG</option>
-                        <option value='png'>PNG</option>
+                        {
+                            Object.keys(ImageFormats).map(key => (
+                                <option
+                                    key={ key }
+                                    value={ ImageFormats[key].value }
+                                >
+                                    { ImageFormats[key].text }
+                                </option>
+                            ))
+                        }
                     </select>
                 </fieldset>
                 <fieldset>

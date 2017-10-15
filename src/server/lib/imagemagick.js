@@ -1,20 +1,27 @@
 import { exec } from 'child_process';
 import path from 'path';
 
+import getWatermarkGravity from '../utils/get-watermark-gravity';
+
 export default class ImageMagick {
     static request(filePath, fileOptions, watermarkPath, watermarkOptions, fileDest) {
         const { width, height } = fileOptions;
-        const { opacity } = watermarkOptions;
-        const size = `${width}x${height}`;
-
-        let execString = `convert \\( ${filePath} -resize ${size}^ -gravity center -crop ${size}+0+0 \\) \\`;
+        const { opacity, size, positionX, positionY } = watermarkOptions;
+        const imageSize = `${width}x${height}`;
+        const watermarkSize = `${(width * Number(size)) / 100}x${(height * Number(size)) / 100}`;
+        const gravity = getWatermarkGravity(positionX, positionY);
+        let execString = `convert \\( ${filePath} \
+            -resize ${imageSize}^ \
+            -gravity center \
+            -crop ${imageSize}+0+0 \\) \
+        \\`;
 
         if (watermarkPath) {
             execString += `
-                \\( ${watermarkPath} -resize ${size}! \\) \
+                \\( ${watermarkPath} -resize ${watermarkSize}\\> \\) \
                 -compose dissolve \
                 -define compose:args='${opacity},100' \
-                -gravity center \
+                -gravity ${gravity} \
                 -composite \
             `;
         }

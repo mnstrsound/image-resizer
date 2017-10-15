@@ -4,6 +4,7 @@ import cn from 'arui-feather/cn';
 
 import SettingsModel from '../../models/settings';
 import ImageFormats from '../../constants/image-formats';
+import WatermarkPositions from '../../constants/watermark-positions';
 
 import './settings-form.css';
 
@@ -38,6 +39,27 @@ export default class SettingsForm extends React.Component {
         settings.setWatermarkOpacity(value);
     }
 
+    handleWatermarkSizeChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setWatermarkSize(value);
+    }
+
+    handleWatermarkPositionXChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setWatermarkPositionX(value);
+    }
+
+    handleWatermarkPositionYChange = (e) => {
+        const { settings } = this;
+        const { target: { value } } = e;
+
+        settings.setWatermarkPositionY(value);
+    }
+
     handleNamingPrefixChange = (e) => {
         const { settings } = this;
         const { target: { value } } = e;
@@ -60,6 +82,10 @@ export default class SettingsForm extends React.Component {
         settings.setNamingFormat(value);
     }
 
+    handleInputFocus = (e) => {
+        e.target.select();
+    }
+
     handleFormSubmit = (e) => {
         e.preventDefault();
 
@@ -77,50 +103,94 @@ export default class SettingsForm extends React.Component {
         return (
             <form className={ cn }>
                 <fieldset>
-                    <label htmlFor='width'>Ширина (px)</label>
+                    <label>Ширина (px)</label>
                     <input
-                        id='width'
                         type='number'
                         value={ this.settings.resize.width }
+                        onFocus={ this.handleInputFocus }
                         onChange={ this.handleResizeWidthChange }
                     />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor='height'>Высота (px)</label>
+                    <label>Высота (px)</label>
                     <input
-                        id='height'
                         type='number'
                         value={ this.settings.resize.height }
+                        onFocus={ this.handleInputFocus }
                         onChange={ this.handleResizeHeightChange }
                     />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor='watermark'>
+                    <label>
                         Ватермарка
                     </label>
                     <input
-                        id='watermark'
                         type='file'
                         onChange={ this.handleWatermarkImageChange }
                     />
                 </fieldset>
                 <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
-                    <label htmlFor='opacity'>Прозрачность (%)</label>
+                    <label>Прозрачность (%)</label>
                     <input
-                        id='opacity'
                         type='number'
                         value={ this.settings.watermark.opacity }
+                        onFocus={ this.handleInputFocus }
                         onChange={ this.handleWatermarkOpacityChange }
                     />
+                </fieldset>
+                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
+                    <label>Размер (%)</label>
+                    <input
+                        type='number'
+                        value={ this.settings.watermark.size }
+                        onFocus={ this.handleInputFocus }
+                        onChange={ this.handleWatermarkSizeChange }
+                    />
+                </fieldset>
+                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
+                    <label>Положение (ось X)</label>
+                    <select
+                        value={ this.settings.watermark.positionX }
+                        onChange={ this.handleWatermarkPositionXChange }
+                    >
+                        {
+                            Object.keys(WatermarkPositions.horizontal).map(key => (
+                                <option
+                                    key={ key }
+                                    value={ WatermarkPositions.horizontal[key].value }
+                                >
+                                    { WatermarkPositions.horizontal[key].text }
+                                </option>
+                            ))
+                        }
+                    </select>
+                </fieldset>
+                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
+                    <label>Положение (ось Y)</label>
+                    <select
+                        value={ this.settings.watermark.positionY }
+                        onChange={ this.handleWatermarkPositionYChange }
+                    >
+                        {
+                            Object.keys(WatermarkPositions.vertical).map(key => (
+                                <option
+                                    key={ key }
+                                    value={ WatermarkPositions.vertical[key].value }
+                                >
+                                    { WatermarkPositions.vertical[key].text }
+                                </option>
+                            ))
+                        }
+                    </select>
                 </fieldset>
                 <fieldset>
                     <label>
                         Префикс
                     </label>
                     <input
-                        id='prefix'
                         type='text'
                         name='prefix'
+                        onFocus={ this.handleInputFocus }
                         value={ this.settings.naming.prefix }
                         onChange={ this.handleNamingPrefixChange }
                     />
@@ -130,16 +200,15 @@ export default class SettingsForm extends React.Component {
                         Индексация c
                     </label>
                     <input
-                        id='start_index'
                         type='number'
+                        onFocus={ this.handleInputFocus }
                         value={ this.settings.naming.indexation }
                         onChange={ this.handleNamingIndexationChange }
                     />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor='format'>Формат</label>
+                    <label>Формат</label>
                     <select
-                        id='format'
                         value={ this.settings.naming.format }
                         onChange={ this.handleNamingFormat }
                     >

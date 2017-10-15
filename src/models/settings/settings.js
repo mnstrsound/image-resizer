@@ -7,16 +7,19 @@ export default class SettingsModel {
         width: defaultSettings.resize.width,
         height: defaultSettings.resize.height
     }
-
-    @observable naming = {
-        prefix: defaultSettings.naming.prefix,
-        indexation: defaultSettings.naming.indexation
-    }
 s
     @observable watermark = {
         image: defaultSettings.watermark.image,
         opacity: defaultSettings.watermark.opacity,
-        format: defaultSettings.watermark.format
+        size: defaultSettings.watermark.size,
+        positionX: defaultSettings.watermark.positionX,
+        positionY: defaultSettings.watermark.positionY
+    }
+
+    @observable naming = {
+        prefix: defaultSettings.naming.prefix,
+        indexation: defaultSettings.naming.indexation,
+        format: defaultSettings.naming.format
     }
 
     @observable format;
@@ -35,6 +38,18 @@ s
 
     @action setWatermarkOpacity(opacity) {
         this.watermark.opacity = opacity;
+    }
+
+    @action setWatermarkSize(size) {
+        this.watermark.size = size;
+    }
+
+    @action setWatermarkPositionX(positionX) {
+        this.watermark.positionX = positionX;
+    }
+
+    @action setWatermarkPositionY(positionY) {
+        this.watermark.positionY = positionY;
     }
 
     @action setNamingPrefix(prefix) {

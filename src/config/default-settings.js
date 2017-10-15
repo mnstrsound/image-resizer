@@ -1,4 +1,5 @@
 import ImageFormats from '../constants/image-formats';
+import WatermarkPositions from '../constants/watermark-positions';
 
 export default {
     resize: {
@@ -7,7 +8,10 @@ export default {
     },
     watermark: {
         image: null,
-        opacity: 50
+        opacity: 50,
+        size: 50,
+        positionX: WatermarkPositions.horizontal.CENTER.value,
+        positionY: WatermarkPositions.vertical.CENTER.value
     },
     naming: {
         prefix: '',

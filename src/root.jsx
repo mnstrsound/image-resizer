@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react';
 import { Router, Switch } from 'react-router';
 import { Route } from 'react-router-dom';
 
-import 'arui-feather/main.css';
+import 'reset-css/reset.css';
 
 import './root.css';
 

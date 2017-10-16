@@ -7,13 +7,14 @@ import './select-watermark.css';
 export default class SelectWatermark extends React.Component {
     handleInputChange = () => {
         const { onChange } = this.props;
+        const { files } = this.input;
         try {
-            this.fileReader.readAsDataURL(this.input.files[0]);
+            this.fileReader.readAsDataURL(files[0]);
         } catch (e) {
             this.setState({ imageSrc: null });
         }
-        this.setState({ files: this.input.files });
-        if (onChange) onChange(this.state.files);
+        this.setState({ files });
+        if (onChange) onChange(files);
     }
 
     constructor(props) {

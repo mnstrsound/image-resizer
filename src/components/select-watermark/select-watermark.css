@@ -1,7 +1,7 @@
 .select-watermark {
     width: 90px !important;
     height: 90px;
-    border: 1px dashed #ccc;
+    border: 1px dashed #eee;
     display: flex;
     cursor: pointer;
 

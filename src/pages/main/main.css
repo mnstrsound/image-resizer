@@ -1,0 +1,20 @@
+.main {
+    max-width: 864px;
+    padding-top: 20px;
+    margin: auto;
+
+    &:after {
+        display: block;
+        clear: both;
+    }
+
+    &__select-images {
+        width: 612px;
+        margin-right: 252px;
+    }
+
+    &__settings-form {
+        width: 232px;
+        float: right;
+    }
+}

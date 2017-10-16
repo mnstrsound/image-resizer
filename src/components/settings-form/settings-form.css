@@ -1,25 +1,30 @@
 .settings-form {
-    max-width: 232px;
     margin: 0 auto;
     padding: 10px 10px 0;
     border: 1px solid #eee;
 
-    fieldset {
+    &__fieldset {
         border: 0;
         padding: 0;
         margin-bottom: 10px;
 
-        label {
+        &_hidden {
+            display: none;
+        }
+
+        &-label {
             width: 110px;
             float: left;
             text-align: right;
         }
 
-        input[type='text'],
-        input[type='number'],
-        input[type='file'],
-        select {
+        &-input,
+        &-select {
             width: 90px;
+            float: right;
+        }
+
+        &-watermark {
             float: right;
         }
     }

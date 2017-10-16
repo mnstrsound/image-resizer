@@ -26,10 +26,9 @@ export default class SettingsForm extends React.Component {
         settings.setResizeHeight(value);
     }
 
-    handleWatermarkImageChange = (e) => {
+    handleWatermarkImageChange = (files) => {
         const { settings } = this;
-        const { target: { files } } = e;
-
+        console.log(files);
         settings.setWatermarkImage(files[0] || null);
     }
 
@@ -103,137 +102,211 @@ export default class SettingsForm extends React.Component {
     render(cn) {
         return (
             <form className={ cn }>
-                <fieldset>
-                    <label>Ширина (px)</label>
-                    <input
-                        type='number'
-                        value={ this.settings.resize.width }
-                        onFocus={ this.handleInputFocus }
-                        onChange={ this.handleResizeWidthChange }
-                    />
-                </fieldset>
-                <fieldset>
-                    <label>Высота (px)</label>
-                    <input
-                        type='number'
-                        value={ this.settings.resize.height }
-                        onFocus={ this.handleInputFocus }
-                        onChange={ this.handleResizeHeightChange }
-                    />
-                </fieldset>
-                <fieldset>
-                    <label>
-                        Ватермарка
-                    </label>
-                    <SelectWatermark />
-                    <input
-                        type='file'
-                        onChange={ this.handleWatermarkImageChange }
-                    />
-                </fieldset>
-                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
-                    <label>Прозрачность (%)</label>
-                    <input
-                        type='number'
-                        value={ this.settings.watermark.opacity }
-                        onFocus={ this.handleInputFocus }
-                        onChange={ this.handleWatermarkOpacityChange }
-                    />
-                </fieldset>
-                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
-                    <label>Размер (%)</label>
-                    <input
-                        type='number'
-                        value={ this.settings.watermark.size }
-                        onFocus={ this.handleInputFocus }
-                        onChange={ this.handleWatermarkSizeChange }
-                    />
-                </fieldset>
-                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
-                    <label>Положение (ось X)</label>
-                    <select
-                        value={ this.settings.watermark.positionX }
-                        onChange={ this.handleWatermarkPositionXChange }
-                    >
-                        {
-                            Object.keys(WatermarkPositions.horizontal).map(key => (
-                                <option
-                                    key={ key }
-                                    value={ WatermarkPositions.horizontal[key].value }
-                                >
-                                    { WatermarkPositions.horizontal[key].text }
-                                </option>
-                            ))
-                        }
-                    </select>
-                </fieldset>
-                <fieldset style={ { display: this.settings.watermark.image ? 'block' : 'none' } }>
-                    <label>Положение (ось Y)</label>
-                    <select
-                        value={ this.settings.watermark.positionY }
-                        onChange={ this.handleWatermarkPositionYChange }
-                    >
-                        {
-                            Object.keys(WatermarkPositions.vertical).map(key => (
-                                <option
-                                    key={ key }
-                                    value={ WatermarkPositions.vertical[key].value }
-                                >
-                                    { WatermarkPositions.vertical[key].text }
-                                </option>
-                            ))
-                        }
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <label>
-                        Префикс
-                    </label>
-                    <input
-                        type='text'
-                        name='prefix'
-                        onFocus={ this.handleInputFocus }
-                        value={ this.settings.naming.prefix }
-                        onChange={ this.handleNamingPrefixChange }
-                    />
-                </fieldset>
-                <fieldset>
-                    <label>
-                        Индексация c
-                    </label>
-                    <input
-                        type='number'
-                        onFocus={ this.handleInputFocus }
-                        value={ this.settings.naming.indexation }
-                        onChange={ this.handleNamingIndexationChange }
-                    />
-                </fieldset>
-                <fieldset>
-                    <label>Формат</label>
-                    <select
-                        value={ this.settings.naming.format }
-                        onChange={ this.handleNamingFormat }
-                    >
-                        {
-                            Object.keys(ImageFormats).map(key => (
-                                <option
-                                    key={ key }
-                                    value={ ImageFormats[key].value }
-                                >
-                                    { ImageFormats[key].text }
-                                </option>
-                            ))
-                        }
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <button
-                        onClick={ this.handleFormSubmit }
-                    >
-                        Применить
-                    </button>
-                </fieldset>
+                { this.renderResizeWidthControl(cn) }
+                { this.renderResizeHeightControl(cn) }
+                { this.renderWatermarkImageControl(cn) }
+                { this.renderWatermarkOpacityControl(cn) }
+                { this.renderWatermarkSizeControl(cn) }
+                { this.renderWatermarkPositionXControl(cn) }
+                { this.renderWatermarkPositionYControl(cn) }
+                { this.renderNamingPrefixControl(cn) }
+                { this.renderNamingIndexationControl(cn) }
+                { this.renderNamingFormatControl(cn) }
+                { this.renderSubmitControl(cn) }
             </form>
+        );
+    }
+
+    renderResizeWidthControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Ширина (px)</label>
+                <input
+                    type='number'
+                    value={ this.settings.resize.width }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleResizeWidthChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderResizeHeightControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Высота (px)</label>
+                <input
+                    type='number'
+                    value={ this.settings.resize.height }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleResizeHeightChange }
+                />
+            </fieldset>
+        );
+    }
+
+
+    renderWatermarkImageControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Ватермарка</label>
+                <SelectWatermark
+                    className={ cn('fieldset-watermark') }
+                    onChange={ this.handleWatermarkImageChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderWatermarkOpacityControl(cn) {
+        const hidden = !this.settings.watermark.image;
+        return (
+            <fieldset className={ cn('fieldset', { hidden }) }>
+                <label className={ cn('fieldset-label') }>Прозрачность (%)</label>
+                <input
+                    type='number'
+                    value={ this.settings.watermark.opacity }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleWatermarkOpacityChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderWatermarkSizeControl(cn) {
+        const hidden = !this.settings.watermark.image;
+        return (
+            <fieldset className={ cn('fieldset', { hidden }) }>
+                <label className={ cn('fieldset-label') }>Размер (%)</label>
+                <input
+                    type='number'
+                    value={ this.settings.watermark.size }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleWatermarkSizeChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderWatermarkPositionXControl(cn) {
+        const hidden = !this.settings.watermark.image;
+        return (
+            <fieldset className={ cn('fieldset', { hidden }) }>
+                <label className={ cn('fieldset-label') }>Положение (ось X)</label>
+                <select
+                    value={ this.settings.watermark.positionX }
+                    className={ cn('fieldset-select') }
+                    onChange={ this.handleWatermarkPositionXChange }
+                >
+                    {
+                        Object.keys(WatermarkPositions.horizontal).map(key => (
+                            <option
+                                key={ key }
+                                value={ WatermarkPositions.horizontal[key].value }
+                            >
+                                { WatermarkPositions.horizontal[key].text }
+                            </option>
+                        ))
+                    }
+                </select>
+            </fieldset>
+        );
+    }
+
+    renderWatermarkPositionYControl(cn) {
+        const hidden = !this.settings.watermark.image;
+        return (
+            <fieldset className={ cn('fieldset', { hidden }) }>
+                <label className={ cn('fieldset-label') }>Положение (ось Y)</label>
+                <select
+                    value={ this.settings.watermark.positionY }
+                    className={ cn('fieldset-select') }
+                    onChange={ this.handleWatermarkPositionYChange }
+                >
+                    {
+                        Object.keys(WatermarkPositions.vertical).map(key => (
+                            <option
+                                key={ key }
+                                value={ WatermarkPositions.vertical[key].value }
+                            >
+                                { WatermarkPositions.vertical[key].text }
+                            </option>
+                        ))
+                    }
+                </select>
+            </fieldset>
+        );
+    }
+
+    renderNamingPrefixControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Префикс</label>
+                <input
+                    type='text'
+                    name='prefix'
+                    value={ this.settings.naming.prefix }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleNamingPrefixChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderNamingIndexationControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Индексация c</label>
+                <input
+                    type='number'
+                    value={ this.settings.naming.indexation }
+                    className={ cn('fieldset-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleNamingIndexationChange }
+                />
+            </fieldset>
+        );
+    }
+
+    renderNamingFormatControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Формат</label>
+                <select
+                    value={ this.settings.naming.format }
+                    className={ cn('fieldset-select') }
+                    onChange={ this.handleNamingFormat }
+                >
+                    {
+                        Object.keys(ImageFormats).map(key => (
+                            <option
+                                key={ key }
+                                value={ ImageFormats[key].value }
+                            >
+                                { ImageFormats[key].text }
+                            </option>
+                        ))
+                    }
+                </select>
+            </fieldset>
+        );
+    }
+
+    renderSubmitControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <button
+                    className={ cn('fieldset-button') }
+                    onClick={ this.handleFormSubmit }
+                >
+                    Применить
+                </button>
+            </fieldset>
         );
     }
 }

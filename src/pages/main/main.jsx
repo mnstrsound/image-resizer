@@ -1,8 +1,12 @@
 import React from 'react';
+import cn from 'arui-feather/cn';
 
+import SelectImages from '../../components/select-images';
 import SettingsForm from '../../components/settings-form';
-import InputFile from '../../components/input-file';
 
+import './main.css';
+
+@cn('main')
 class Main extends React.Component {
     state = {
         files: null
@@ -30,15 +34,16 @@ class Main extends React.Component {
         });
     }
 
-    render() {
+    render(cn) {
         return (
-            <div>
-                <InputFile
-                    id='upload-images'
-                    onChange={ this.handleInputFileChange }
-                />
+            <div className={ cn }>
                 <SettingsForm
+                    className={ cn('settings-form') }
                     onSubmit={ this.handleSettingsFormSubmit }
+                />
+                <SelectImages
+                    className={ cn('select-images') }
+                    onChange={ this.handleInputFileChange }
                 />
             </div>
         );

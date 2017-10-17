@@ -4,9 +4,28 @@
     border: 1px solid #eee;
 
     &__fieldset {
-        border: 0;
-        padding: 0;
+        margin-bottom: 11px;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #eee;
+        }
+    }
+
+    &__legend {
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    &__row {
         margin-bottom: 10px;
+        overflow: hidden;
 
         &_hidden {
             display: none;
@@ -31,6 +50,12 @@
             display: inline-block;
             vertical-align: middle;
             margin: 0;
+
+            &-text {
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 5px;
+            }
         }
 
         &-watermark {

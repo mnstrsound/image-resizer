@@ -81,7 +81,6 @@ export default class SettingsForm extends React.Component {
         settings.setNamingIndexation(value);
     }
 
-
     handleNamingFormat = (e) => {
         const { settings } = this;
         const { target: { value } } = e;
@@ -109,17 +108,9 @@ export default class SettingsForm extends React.Component {
     render(cn) {
         return (
             <form className={ cn }>
-                { this.renderResizeWidthControl(cn) }
-                { this.renderResizeHeightControl(cn) }
-                { this.renderResizeCropControl(cn) }
-                { this.renderWatermarkImageControl(cn) }
-                { this.renderWatermarkOpacityControl(cn) }
-                { this.renderWatermarkSizeControl(cn) }
-                { this.renderWatermarkPositionXControl(cn) }
-                { this.renderWatermarkPositionYControl(cn) }
-                { this.renderNamingPrefixControl(cn) }
-                { this.renderNamingIndexationControl(cn) }
-                { this.renderNamingFormatControl(cn) }
+                { this.renderResizeControls(cn) }
+                { this.renderWatermarkControls(cn) }
+                { this.renderNamingControls(cn) }
                 { this.renderSubmitControl(cn) }
             </form>
         );
@@ -127,100 +118,114 @@ export default class SettingsForm extends React.Component {
 
     renderResizeWidthControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Ширина (px)</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Ширина (px)</label>
                 <input
                     type='number'
                     value={ this.settings.resize.width }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleResizeWidthChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderResizeHeightControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Высота (px)</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Высота (px)</label>
                 <input
                     type='number'
                     value={ this.settings.resize.height }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleResizeHeightChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderResizeCropControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Обрезать</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') } />
                 <input
                     type='checkbox'
                     checked={ this.settings.resize.crop }
-                    className={ cn('fieldset-checkbox') }
+                    className={ cn('row-checkbox') }
                     onChange={ this.handleResizeCropChange }
                 />
+                <label className={ cn('row-checkbox-text') }>
+                    Обрезать
+                </label>
+            </div>
+        );
+    }
+
+    renderResizeControls(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <legend className={ cn('legend') }>Размеры</legend>
+                { this.renderResizeWidthControl(cn) }
+                { this.renderResizeHeightControl(cn) }
+                { this.renderResizeCropControl(cn) }
             </fieldset>
         );
     }
 
     renderWatermarkImageControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Ватермарка</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Изображение</label>
                 <SelectWatermark
-                    className={ cn('fieldset-watermark') }
+                    className={ cn('row-watermark') }
                     onChange={ this.handleWatermarkImageChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderWatermarkOpacityControl(cn) {
         const hidden = !this.settings.watermark.image;
         return (
-            <fieldset className={ cn('fieldset', { hidden }) }>
-                <label className={ cn('fieldset-label') }>Прозрачность (%)</label>
+            <div className={ cn('row', { hidden }) }>
+                <label className={ cn('row-label') }>Прозрачность (%)</label>
                 <input
                     type='number'
                     value={ this.settings.watermark.opacity }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleWatermarkOpacityChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderWatermarkSizeControl(cn) {
         const hidden = !this.settings.watermark.image;
         return (
-            <fieldset className={ cn('fieldset', { hidden }) }>
-                <label className={ cn('fieldset-label') }>Размер (%)</label>
+            <div className={ cn('row', { hidden }) }>
+                <label className={ cn('row-label') }>Размер (%)</label>
                 <input
                     type='number'
                     value={ this.settings.watermark.size }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleWatermarkSizeChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderWatermarkPositionXControl(cn) {
         const hidden = !this.settings.watermark.image;
         return (
-            <fieldset className={ cn('fieldset', { hidden }) }>
-                <label className={ cn('fieldset-label') }>Положение (ось X)</label>
+            <div className={ cn('row', { hidden }) }>
+                <label className={ cn('row-label') }>Положение (ось X)</label>
                 <select
                     value={ this.settings.watermark.positionX }
-                    className={ cn('fieldset-select') }
+                    className={ cn('row-select') }
                     onChange={ this.handleWatermarkPositionXChange }
                 >
                     {
@@ -234,18 +239,18 @@ export default class SettingsForm extends React.Component {
                         ))
                     }
                 </select>
-            </fieldset>
+            </div>
         );
     }
 
     renderWatermarkPositionYControl(cn) {
         const hidden = !this.settings.watermark.image;
         return (
-            <fieldset className={ cn('fieldset', { hidden }) }>
-                <label className={ cn('fieldset-label') }>Положение (ось Y)</label>
+            <div className={ cn('row', { hidden }) }>
+                <label className={ cn('row-label') }>Положение (ось Y)</label>
                 <select
                     value={ this.settings.watermark.positionY }
-                    className={ cn('fieldset-select') }
+                    className={ cn('row-select') }
                     onChange={ this.handleWatermarkPositionYChange }
                 >
                     {
@@ -259,48 +264,61 @@ export default class SettingsForm extends React.Component {
                         ))
                     }
                 </select>
+            </div>
+        );
+    }
+
+    renderWatermarkControls(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <legend className={ cn('legend') }>Водяной знак</legend>
+                { this.renderWatermarkImageControl(cn) }
+                { this.renderWatermarkOpacityControl(cn) }
+                { this.renderWatermarkSizeControl(cn) }
+                { this.renderWatermarkPositionXControl(cn) }
+                { this.renderWatermarkPositionYControl(cn) }
             </fieldset>
         );
     }
 
     renderNamingPrefixControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Префикс</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Префикс</label>
                 <input
                     type='text'
                     name='prefix'
                     value={ this.settings.naming.prefix }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleNamingPrefixChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderNamingIndexationControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Индексация c</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Индексация c</label>
                 <input
                     type='number'
                     value={ this.settings.naming.indexation }
-                    className={ cn('fieldset-input') }
+                    className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleNamingIndexationChange }
                 />
-            </fieldset>
+            </div>
         );
     }
 
     renderNamingFormatControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
-                <label className={ cn('fieldset-label') }>Формат</label>
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Формат</label>
                 <select
                     value={ this.settings.naming.format }
-                    className={ cn('fieldset-select') }
+                    className={ cn('row-select') }
                     onChange={ this.handleNamingFormat }
                 >
                     {
@@ -314,20 +332,31 @@ export default class SettingsForm extends React.Component {
                         ))
                     }
                 </select>
+            </div>
+        );
+    }
+
+    renderNamingControls(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <legend className={ cn('legend') }>Именование</legend>
+                { this.renderNamingPrefixControl(cn) }
+                { this.renderNamingIndexationControl(cn) }
+                { this.renderNamingFormatControl(cn) }
             </fieldset>
         );
     }
 
     renderSubmitControl(cn) {
         return (
-            <fieldset className={ cn('fieldset') }>
+            <div className={ cn('row') }>
                 <button
-                    className={ cn('fieldset-button') }
+                    className={ cn('row-button') }
                     onClick={ this.handleFormSubmit }
                 >
                     Применить
                 </button>
-            </fieldset>
+            </div>
         );
     }
 }

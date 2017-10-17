@@ -3,7 +3,7 @@
     float: left;
     margin-left: 10px;
 
-    &:first-child {
+    &:nth-child(6n + 1) {
         margin-left: 0;
     }
 

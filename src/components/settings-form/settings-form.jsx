@@ -107,7 +107,10 @@ export default class SettingsForm extends React.Component {
 
     render(cn) {
         return (
-            <form className={ cn }>
+            <form
+                className={ cn }
+                onSubmit={ this.handleFormSubmit }
+            >
                 { this.renderResizeControls(cn) }
                 { this.renderWatermarkControls(cn) }
                 { this.renderNamingControls(cn) }
@@ -122,6 +125,8 @@ export default class SettingsForm extends React.Component {
                 <label className={ cn('row-label') }>Ширина (px)</label>
                 <input
                     type='number'
+                    min='0'
+                    required={ true }
                     value={ this.settings.resize.width }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -137,6 +142,8 @@ export default class SettingsForm extends React.Component {
                 <label className={ cn('row-label') }>Высота (px)</label>
                 <input
                     type='number'
+                    min='0'
+                    required={ true }
                     value={ this.settings.resize.height }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -193,6 +200,8 @@ export default class SettingsForm extends React.Component {
                 <label className={ cn('row-label') }>Прозрачность (%)</label>
                 <input
                     type='number'
+                    min='0'
+                    max='100'
                     value={ this.settings.watermark.opacity }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -209,6 +218,8 @@ export default class SettingsForm extends React.Component {
                 <label className={ cn('row-label') }>Размер (%)</label>
                 <input
                     type='number'
+                    min='0'
+                    max='100'
                     value={ this.settings.watermark.size }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -288,6 +299,8 @@ export default class SettingsForm extends React.Component {
                 <input
                     type='text'
                     name='prefix'
+                    pattern='[\w-]*'
+                    maxLength='20'
                     value={ this.settings.naming.prefix }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -303,6 +316,7 @@ export default class SettingsForm extends React.Component {
                 <label className={ cn('row-label') }>Индексация c</label>
                 <input
                     type='number'
+                    min='0'
                     value={ this.settings.naming.indexation }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
@@ -352,7 +366,6 @@ export default class SettingsForm extends React.Component {
             <div className={ cn('row') }>
                 <button
                     className={ cn('row-button') }
-                    onClick={ this.handleFormSubmit }
                 >
                     Применить
                 </button>

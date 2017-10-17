@@ -1,88 +1,90 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import cn from 'arui-feather/cn';
 
 import SelectWatermark from '../../components/select-watermark';
-import SettingsModel from '../../models/settings';
 import ImageFormats from '../../constants/image-formats';
 import WatermarkPositions from '../../constants/watermark-positions';
 
 import './settings-form.css';
 
-@cn('settings-form')
+@inject(({ appStore }) => ({
+    appStore
+}))
 @observer
+@cn('settings-form')
 export default class SettingsForm extends React.Component {
     handleResizeWidthChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setResizeWidth(value);
     }
 
     handleResizeHeightChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setResizeHeight(value);
     }
 
     handleResizeCropChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { checked } } = e;
 
         settings.setResizeCrop(checked);
     }
 
     handleWatermarkImageChange = (files) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
 
         settings.setWatermarkImage(files[0] || null);
     }
 
     handleWatermarkOpacityChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setWatermarkOpacity(value);
     }
 
     handleWatermarkSizeChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setWatermarkSize(value);
     }
 
     handleWatermarkPositionXChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setWatermarkPositionX(value);
     }
 
     handleWatermarkPositionYChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setWatermarkPositionY(value);
     }
 
     handleNamingPrefixChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setNamingPrefix(value);
     }
 
     handleNamingIndexationChange = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setNamingIndexation(value);
     }
 
     handleNamingFormat = (e) => {
-        const { settings } = this;
+        const { appStore: { settings } } = this.props;
         const { target: { value } } = e;
 
         settings.setNamingFormat(value);
@@ -94,15 +96,7 @@ export default class SettingsForm extends React.Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-
-        const { onSubmit } = this.props;
-
-        if (onSubmit) onSubmit(this.settings.values);
-    }
-
-    constructor(props) {
-        super(props);
-        this.settings = new SettingsModel();
+        this.props.appStore.process();
     }
 
     render(cn) {
@@ -120,14 +114,15 @@ export default class SettingsForm extends React.Component {
     }
 
     renderResizeWidthControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') }>Ширина (px)</label>
                 <input
                     type='number'
-                    min='0'
+                    min='1'
                     required={ true }
-                    value={ this.settings.resize.width }
+                    value={ settings.resize.width }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleResizeWidthChange }
@@ -137,14 +132,15 @@ export default class SettingsForm extends React.Component {
     }
 
     renderResizeHeightControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') }>Высота (px)</label>
                 <input
                     type='number'
-                    min='0'
+                    min='1'
                     required={ true }
-                    value={ this.settings.resize.height }
+                    value={ settings.resize.height }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleResizeHeightChange }
@@ -154,12 +150,13 @@ export default class SettingsForm extends React.Component {
     }
 
     renderResizeCropControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') } />
                 <input
                     type='checkbox'
-                    checked={ this.settings.resize.crop }
+                    checked={ settings.resize.crop }
                     className={ cn('row-checkbox') }
                     onChange={ this.handleResizeCropChange }
                 />
@@ -194,7 +191,8 @@ export default class SettingsForm extends React.Component {
     }
 
     renderWatermarkOpacityControl(cn) {
-        const hidden = !this.settings.watermark.image;
+        const { appStore: { settings } } = this.props;
+        const hidden = !settings.watermark.image;
         return (
             <div className={ cn('row', { hidden }) }>
                 <label className={ cn('row-label') }>Прозрачность (%)</label>
@@ -202,7 +200,7 @@ export default class SettingsForm extends React.Component {
                     type='number'
                     min='0'
                     max='100'
-                    value={ this.settings.watermark.opacity }
+                    value={ settings.watermark.opacity }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleWatermarkOpacityChange }
@@ -212,7 +210,8 @@ export default class SettingsForm extends React.Component {
     }
 
     renderWatermarkSizeControl(cn) {
-        const hidden = !this.settings.watermark.image;
+        const { appStore: { settings } } = this.props;
+        const hidden = !settings.watermark.image;
         return (
             <div className={ cn('row', { hidden }) }>
                 <label className={ cn('row-label') }>Размер (%)</label>
@@ -220,7 +219,7 @@ export default class SettingsForm extends React.Component {
                     type='number'
                     min='0'
                     max='100'
-                    value={ this.settings.watermark.size }
+                    value={ settings.watermark.size }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleWatermarkSizeChange }
@@ -230,12 +229,13 @@ export default class SettingsForm extends React.Component {
     }
 
     renderWatermarkPositionXControl(cn) {
-        const hidden = !this.settings.watermark.image;
+        const { appStore: { settings } } = this.props;
+        const hidden = !settings.watermark.image;
         return (
             <div className={ cn('row', { hidden }) }>
                 <label className={ cn('row-label') }>Положение (ось X)</label>
                 <select
-                    value={ this.settings.watermark.positionX }
+                    value={ settings.watermark.positionX }
                     className={ cn('row-select') }
                     onChange={ this.handleWatermarkPositionXChange }
                 >
@@ -255,12 +255,13 @@ export default class SettingsForm extends React.Component {
     }
 
     renderWatermarkPositionYControl(cn) {
-        const hidden = !this.settings.watermark.image;
+        const { appStore: { settings } } = this.props;
+        const hidden = !settings.watermark.image;
         return (
             <div className={ cn('row', { hidden }) }>
                 <label className={ cn('row-label') }>Положение (ось Y)</label>
                 <select
-                    value={ this.settings.watermark.positionY }
+                    value={ settings.watermark.positionY }
                     className={ cn('row-select') }
                     onChange={ this.handleWatermarkPositionYChange }
                 >
@@ -293,6 +294,7 @@ export default class SettingsForm extends React.Component {
     }
 
     renderNamingPrefixControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') }>Префикс</label>
@@ -301,7 +303,7 @@ export default class SettingsForm extends React.Component {
                     name='prefix'
                     pattern='[\w-]*'
                     maxLength='20'
-                    value={ this.settings.naming.prefix }
+                    value={ settings.naming.prefix }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleNamingPrefixChange }
@@ -311,13 +313,14 @@ export default class SettingsForm extends React.Component {
     }
 
     renderNamingIndexationControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') }>Индексация c</label>
                 <input
                     type='number'
                     min='0'
-                    value={ this.settings.naming.indexation }
+                    value={ settings.naming.indexation }
                     className={ cn('row-input') }
                     onFocus={ this.handleInputFocus }
                     onChange={ this.handleNamingIndexationChange }
@@ -327,11 +330,12 @@ export default class SettingsForm extends React.Component {
     }
 
     renderNamingFormatControl(cn) {
+        const { appStore: { settings } } = this.props;
         return (
             <div className={ cn('row') }>
                 <label className={ cn('row-label') }>Формат</label>
                 <select
-                    value={ this.settings.naming.format }
+                    value={ settings.naming.format }
                     className={ cn('row-select') }
                     onChange={ this.handleNamingFormat }
                 >

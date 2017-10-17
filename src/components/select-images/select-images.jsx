@@ -1,33 +1,33 @@
 import React from 'react';
+import { observer, inject } from 'mobx-react';
 import cn from 'arui-feather/cn';
 
 import SelectedImage from '../../components/selected-image';
 
 import './select-images.css';
 
+@inject(({ appStore }) => ({
+    appStore
+}))
+@observer
 @cn('select-images')
 export default class SelectImages extends React.Component {
-    state = {
-        files: []
-    }
-
     handleInputChange = () => {
-        const { onChange } = this.props;
+        const { appStore } = this.props;
         const { files } = this.input;
-        this.setState({ files });
-        if (onChange) onChange(this.input.files);
+        appStore.setImages(files);
     }
 
     render(cn) {
-        const { files } = this.state;
+        const { images } = this.props.appStore;
         return (
             <label className={ cn }>
-                { files.length ? (
-                    <div className={ cn('files') }>
-                        { Array.prototype.map.call(files, file => (
+                { images.length ? (
+                    <div className={ cn('images') }>
+                        { Array.prototype.map.call(images, image => (
                             <SelectedImage
-                                key={ file.name }
-                                file={ file }
+                                key={ image.name }
+                                file={ image }
                             />
                         )) }
                     </div>

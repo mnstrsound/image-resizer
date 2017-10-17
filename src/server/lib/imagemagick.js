@@ -4,7 +4,7 @@ import path from 'path';
 import getWatermarkGravity from '../utils/get-watermark-gravity';
 
 export default class ImageMagick {
-    static request(filePath, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
+    static process(filePath, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
         const { width, height, crop } = resizeSettings;
         const { opacity, size, positionX, positionY } = watermarkSettings;
         const imageSize = `${width}x${height}`;
@@ -36,11 +36,11 @@ export default class ImageMagick {
         });
     }
 
-    static requestAll(filesPaths, resizeSettings, watermarkPath, watermarkSettings, namingSettings, dir) {
+    static processAll(filesPaths, resizeSettings, watermarkPath, watermarkSettings, namingSettings, dir) {
         const { prefix, indexation, format } = namingSettings;
         return Promise.all(
             filesPaths.map(
-                (filePath, index) => ImageMagick.request(
+                (filePath, index) => ImageMagick.process(
                     filePath,
                     resizeSettings,
                     watermarkPath,

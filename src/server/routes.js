@@ -2,6 +2,7 @@ import Router from 'koa-router';
 import mkdirp from 'mkdirp-promise';
 import ImageMagick from './lib/imagemagick';
 
+import handleError from './lib/handle-error';
 import zip from './lib/zip';
 import tempDir from './lib/temp-dir';
 
@@ -18,18 +19,33 @@ router.post('/api/images', async (ctx) => {
     const watermarkPath = watermarkImage ? watermarkImage.path : undefined;
     const dir = tempDir();
 
-    await mkdirp(dir);
+    try {
+        await mkdirp(dir);
+    } catch (err) {
+        ctx.body = handleError(err);
+        return;
+    }
 
-    await ImageMagick.requestAll(
-        filesPaths,
-        resizeSettings,
-        watermarkPath,
-        watermarkSettings,
-        namingSettings,
-        dir
-    ).catch(e => { console.log(e); });
 
-    ctx.body = await zip(dir);
+    try {
+        await ImageMagick.processAll(
+            filesPaths,
+            resizeSettings,
+            watermarkPath,
+            watermarkSettings,
+            namingSettings,
+            dir
+        );
+    } catch (err) {
+        ctx.body = handleError(err);
+        return;
+    }
+
+    try {
+        ctx.body = await zip(dir);
+    } catch (err) {
+        ctx.body = handleError(err);
+    }
 });
 
 export function routes() { return router.routes(); }

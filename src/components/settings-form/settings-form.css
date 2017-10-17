@@ -14,14 +14,23 @@
 
         &-label {
             width: 110px;
-            float: left;
+            margin-right: 10px;
             text-align: right;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         &-input,
         &-select {
             width: 90px;
-            float: right;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        &-checkbox {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
         }
 
         &-watermark {

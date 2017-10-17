@@ -5,7 +5,8 @@ import defaultSettings from '../../config/default-settings';
 export default class SettingsModel {
     @observable resize = {
         width: defaultSettings.resize.width,
-        height: defaultSettings.resize.height
+        height: defaultSettings.resize.height,
+        crop: defaultSettings.resize.crop
     }
 s
     @observable watermark = {
@@ -22,14 +23,16 @@ s
         format: defaultSettings.naming.format
     }
 
-    @observable format;
-
     @action setResizeWidth(width) {
         this.resize.width = width;
     }
 
     @action setResizeHeight(height) {
         this.resize.height = height;
+    }
+
+    @action setResizeCrop(crop) {
+        this.resize.crop = crop;
     }
 
     @action setWatermarkImage(image) {

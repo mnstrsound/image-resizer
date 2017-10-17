@@ -26,9 +26,16 @@ export default class SettingsForm extends React.Component {
         settings.setResizeHeight(value);
     }
 
+    handleResizeCropChange = (e) => {
+        const { settings } = this;
+        const { target: { checked } } = e;
+
+        settings.setResizeCrop(checked);
+    }
+
     handleWatermarkImageChange = (files) => {
         const { settings } = this;
-        console.log(files);
+
         settings.setWatermarkImage(files[0] || null);
     }
 
@@ -104,6 +111,7 @@ export default class SettingsForm extends React.Component {
             <form className={ cn }>
                 { this.renderResizeWidthControl(cn) }
                 { this.renderResizeHeightControl(cn) }
+                { this.renderResizeCropControl(cn) }
                 { this.renderWatermarkImageControl(cn) }
                 { this.renderWatermarkOpacityControl(cn) }
                 { this.renderWatermarkSizeControl(cn) }
@@ -147,6 +155,19 @@ export default class SettingsForm extends React.Component {
         );
     }
 
+    renderResizeCropControl(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <label className={ cn('fieldset-label') }>Обрезать</label>
+                <input
+                    type='checkbox'
+                    checked={ this.settings.resize.crop }
+                    className={ cn('fieldset-checkbox') }
+                    onChange={ this.handleResizeCropChange }
+                />
+            </fieldset>
+        );
+    }
 
     renderWatermarkImageControl(cn) {
         return (

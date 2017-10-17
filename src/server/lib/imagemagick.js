@@ -4,16 +4,16 @@ import path from 'path';
 import getWatermarkGravity from '../utils/get-watermark-gravity';
 
 export default class ImageMagick {
-    static request(filePath, fileOptions, watermarkPath, watermarkOptions, fileDest) {
-        const { width, height } = fileOptions;
-        const { opacity, size, positionX, positionY } = watermarkOptions;
+    static request(filePath, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
+        const { width, height, crop } = resizeSettings;
+        const { opacity, size, positionX, positionY } = watermarkSettings;
         const imageSize = `${width}x${height}`;
         const watermarkSize = `${(width * Number(size)) / 100}x${(height * Number(size)) / 100}`;
         const gravity = getWatermarkGravity(positionX, positionY);
         let execString = `convert \\( ${filePath} \
             -resize ${imageSize}^ \
             -gravity center \
-            -crop ${imageSize}+0+0 \\) \
+            ${crop ? `-crop ${imageSize}+0+0` : ''} \\) \
         \\`;
 
         if (watermarkPath) {

@@ -4,7 +4,8 @@ import WatermarkPositions from '../constants/watermark-positions';
 export default {
     resize: {
         width: 100,
-        height: 100
+        height: 100,
+        crop: true
     },
     watermark: {
         image: null,

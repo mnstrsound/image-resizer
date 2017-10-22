@@ -366,12 +366,12 @@ export default class SettingsForm extends React.Component {
     }
 
     renderSubmitControl(cn) {
-        const { valid } = this.props.appStore;
+        const { valid, loading } = this.props.appStore;
         return (
             <div className={ cn('row') }>
                 <button
                     className={ cn('row-button') }
-                    disabled={ !valid }
+                    disabled={ !valid || loading }
                 >
                     Применить
                 </button>

@@ -21,6 +21,7 @@ class Main extends React.Component {
                     <SelectImages />
                     { this.renderImagesLengthInfo(cn) }
                     { this.renderImagesSizeInfo(cn) }
+                    { this.renderLoadingInfo(cn) }
                     { this.renderResponseInfo(cn) }
                 </div>
             </div>
@@ -43,6 +44,18 @@ class Main extends React.Component {
                 Размер: { imagesSize } MB / 100 MB
             </p>
         );
+    }
+
+    renderLoadingInfo(cn) {
+        const { loading } = this.props.appStore;
+        if (loading) {
+            return (
+                <p className={ cn('info') }>
+                    Идет загрузка...
+                </p>
+            );
+        }
+        return null;
     }
 
     renderResponseInfo(cn) {

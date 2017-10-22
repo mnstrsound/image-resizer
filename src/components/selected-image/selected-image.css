@@ -27,6 +27,7 @@
     }
 
     &__name {
+        padding-bottom: 1px;
         margin-top: 5px;
         text-overflow: ellipsis;
         white-space: nowrap;

@@ -12,6 +12,8 @@ export default class AppStore {
 
     @observable error = null;
 
+    @observable loading = false;
+
     @action setImages(images) {
         this.images = images;
     }
@@ -36,6 +38,8 @@ export default class AppStore {
 
         if (watermarkImage) formData.append('watermark', watermarkImage);
 
+        this.loading = true;
+
         fetch('/api/images', {
             method: 'POST',
             body: formData
@@ -44,6 +48,9 @@ export default class AppStore {
             .then(({ err, link }) => {
                 if (err) this.error = err;
                 else this.link = link;
+                this.loading = false;
+            }).catch((err) => {
+                this.error = err;
             });
     }
 

@@ -4,22 +4,24 @@ import { arrayMove } from 'react-sortable-hoc';
 import SettingsModel from '../models/settings';
 
 export default class AppStore {
-    settings = new SettingsModel()
+    settings = new SettingsModel();
 
-    @observable images = []
+    @observable images = [];
 
     @observable link = null;
+
+    @observable error = null;
 
     @action setImages(images) {
         this.images = images;
     }
 
-    @action deleteImage(selectedImage) {
-        this.images = this.images.filter(image => image !== selectedImage);
-    }
-
     @action moveImages(oldIndex, newIndex) {
         this.images = arrayMove(this.images, oldIndex, newIndex);
+    }
+
+    @action deleteImage(selectedImage) {
+        this.images = this.images.filter(image => image !== selectedImage);
     }
 
     @action process() {
@@ -38,10 +40,15 @@ export default class AppStore {
             method: 'POST',
             body: formData
         })
-            .then(data => data.text())
-            .then((link) => {
-                this.link = link;
+            .then(data => data.json())
+            .then(({ err, link }) => {
+                if (err) this.error = err;
+                else this.link = link;
             });
+    }
+
+    @computed get imagesSize() {
+        return (this.images.reduce((acc, item) => (acc += item.size), 0) / (1024 * 1024)).toFixed(2);
     }
 
     @computed get valid() {

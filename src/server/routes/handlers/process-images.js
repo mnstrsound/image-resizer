@@ -42,7 +42,7 @@ export default async (ctx) => {
 
     try {
         const zipPath = await zip(dir);
-        ctx.body = zipPath;
+        ctx.body = JSON.stringify({ link: zipPath });
         setTimeout(() => {
             fs.remove(zipPath);
         }, 60 * 15 * 1000);

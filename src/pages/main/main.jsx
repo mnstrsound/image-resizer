@@ -12,7 +12,6 @@ import './main.css';
 @cn('main')
 class Main extends React.Component {
     render(cn) {
-        const { link } = this.props.appStore;
         return (
             <div className={ cn }>
                 <div className={ cn('settings-form') }>
@@ -20,12 +19,49 @@ class Main extends React.Component {
                 </div>
                 <div className={ cn('select-images') }>
                     <SelectImages />
-                    <p className={ cn('download-link') }>
-                        { link && <a href={ link } target='blank'>Скачать архив</a> }
-                    </p>
+                    { this.renderImagesLengthInfo(cn) }
+                    { this.renderImagesSizeInfo(cn) }
+                    { this.renderResponseInfo(cn) }
                 </div>
             </div>
         );
+    }
+
+    renderImagesLengthInfo(cn) {
+        const { images } = this.props.appStore;
+        return (
+            <p className={ cn('info') }>
+                Выбрано файлов: { images.length } / 20
+            </p>
+        );
+    }
+
+    renderImagesSizeInfo(cn) {
+        const { imagesSize } = this.props.appStore;
+        return (
+            <p className={ cn('info') }>
+                Размер: { imagesSize } MB / 100 MB
+            </p>
+        );
+    }
+
+    renderResponseInfo(cn) {
+        const { error, link } = this.props.appStore;
+        if (error) {
+            return (
+                <p className={ cn('info') }>
+                    Ошибка: { error }
+                </p>
+            );
+        }
+        if (link) {
+            return (
+                <p className={ cn('info') }>
+                    <a href={ link } target='blank'>Скачать архив</a>
+                </p>
+            );
+        }
+        return null;
     }
 }
 

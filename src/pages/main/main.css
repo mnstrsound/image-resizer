@@ -18,8 +18,15 @@
         float: right;
     }
 
+    &__info {
+        margin-bottom: 10px;
+
+        &:nth-of-type(1) {
+            margin-top: 20px;
+        }
+    }
+
     &__download-link {
         text-align: center;
-        margin-top: 20px;
     }
 }

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/server/index.js --exec babel-node",
-    "watch": "webpack --watch ./build/bundle.js",
+    "watch": "webpack --watch",
+    "production": "NODE_ENV=production nodemon ./src/server/index.js --exec babel-node",
+    "build": "NODE_ENV=production webpack ",
     "test": "npm run lint",
     "lint-css": "stylelint ./src/**/*.css",
     "lint-js": "eslint ./src/ --ext .js,.jsx",

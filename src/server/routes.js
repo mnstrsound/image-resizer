@@ -1,5 +1,8 @@
 import Router from 'koa-router';
 import mkdirp from 'mkdirp-promise';
+import findRemoveSync from 'find-remove';
+import fs from 'fs';
+
 import ImageMagick from './lib/imagemagick';
 
 import handleError from './lib/handle-error';
@@ -7,6 +10,10 @@ import zip from './lib/zip';
 import tempDir from './lib/temp-dir';
 
 const router = new Router();
+
+router.get('/index.html', (ctx) => {
+    ctx.render('index', { state: JSON.stringify({}) });
+});
 
 router.post('/api/images', async (ctx) => {
     const {
@@ -43,6 +50,9 @@ router.post('/api/images', async (ctx) => {
 
     try {
         ctx.body = await zip(dir);
+        fs.rmdir(dir, (err) => {
+
+        });
     } catch (err) {
         ctx.body = handleError(err);
     }

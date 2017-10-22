@@ -24,12 +24,12 @@ export default class SelectImages extends React.Component {
     }
 
     render(cn) {
-        const { images } = this.props.appStore;
+        const { images, link } = this.props.appStore;
         return (
             <div className={ cn }>
                 { images.length
                     ? <SelectedImages
-                        axis='x'
+                        axis='xy'
                         images={ images }
                         onSortEnd={ this.handleSortEnd }
                     />
@@ -44,6 +44,7 @@ export default class SelectImages extends React.Component {
                         />
                     </label>
                 }
+                { link && <a href={ link } target='blank'>Скачать</a> }
             </div>
         );
     }

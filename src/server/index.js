@@ -1,5 +1,4 @@
 import Koa from 'koa';
-import koaStatic from 'koa-static';
 import koaBody from 'koa-body';
 import pug from 'js-koa-pug';
 
@@ -9,7 +8,6 @@ import { routes, allowedMethods } from './routes';
 const app = new Koa();
 
 app.use(pug('src/server/views'));
-app.use(koaStatic('build'));
 app.use(koaBody(koaBodyConfig));
 app.use(routes());
 app.use(allowedMethods());

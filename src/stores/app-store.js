@@ -8,6 +8,8 @@ export default class AppStore {
 
     @observable images = []
 
+    @observable link = null;
+
     @action setImages(images) {
         this.images = images;
     }
@@ -31,6 +33,10 @@ export default class AppStore {
         fetch('/api/images', {
             method: 'POST',
             body: formData
-        });
+        })
+            .then(data => data.text())
+            .then(link => {
+                this.link = link;
+            });
     }
 }

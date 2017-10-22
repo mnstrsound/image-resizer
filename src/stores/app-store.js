@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import { arrayMove } from 'react-sortable-hoc';
 
 import SettingsModel from '../models/settings';
 
@@ -9,6 +10,10 @@ export default class AppStore {
 
     @action setImages(images) {
         this.images = images;
+    }
+
+    @action moveImages(oldIndex, newIndex) {
+        this.images = arrayMove(this.images, oldIndex, newIndex);
     }
 
     @action process() {

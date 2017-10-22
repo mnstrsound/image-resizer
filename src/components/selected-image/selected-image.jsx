@@ -1,24 +1,24 @@
 import React from 'react';
 import cn from 'arui-feather/cn';
+import { SortableElement } from 'react-sortable-hoc';
 
 import './selected-image.css';
 
 @cn('selected-image')
-export default class SelectedImage extends React.Component {
+class SelectedImage extends React.Component {
     state = {
         imageSrc: null
     }
 
     componentDidMount() {
-        const { file } = this.props;
+        const { image } = this.props;
         const fileReader = new FileReader();
-
         fileReader.addEventListener('load', (e) => { this.setState({ imageSrc: e.target.result }); });
-        fileReader.readAsDataURL(file);
+        fileReader.readAsDataURL(image);
     }
 
     render(cn) {
-        const { file } = this.props;
+        const { image } = this.props;
         const { imageSrc } = this.state;
         return (
             <div className={ cn }>
@@ -30,12 +30,14 @@ export default class SelectedImage extends React.Component {
                     />
                 </div>
                 <div
-                    title={ file.name }
+                    title={ image.name }
                     className={ cn('name') }
                 >
-                    { file.name }
+                    { image.name }
                 </div>
             </div>
         );
     }
 }
+
+export default SortableElement(SelectedImage);

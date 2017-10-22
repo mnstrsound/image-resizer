@@ -1,15 +1,19 @@
 .select-images {
-    display: flex;
-    min-height: 100px;
-    padding: 10px;
+    padding: 10px 5px;
     border: 1px dashed #eee;
     overflow: hidden;
 
-    &__label {
-        margin: auto;
-    }
+    &__area {
+        display: flex;
+        width: 100%;
+        min-height: 100px;
 
-    &__input {
-        display: none;
+        &-label {
+            margin: auto;
+        }
+
+        &-input {
+            display: none;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { arrayMove } from 'react-sortable-hoc';
 
 import SettingsModel from '../models/settings';
@@ -12,6 +12,10 @@ export default class AppStore {
 
     @action setImages(images) {
         this.images = images;
+    }
+
+    @action deleteImage(selectedImage) {
+        this.images = this.images.filter(image => image !== selectedImage);
     }
 
     @action moveImages(oldIndex, newIndex) {
@@ -35,8 +39,12 @@ export default class AppStore {
             body: formData
         })
             .then(data => data.text())
-            .then(link => {
+            .then((link) => {
                 this.link = link;
             });
+    }
+
+    @computed get valid() {
+        return this.images.length > 0 && this.images.reduce((acc, item) => (acc += item.size), 0) < (1024 * 1024 * 100);
     }
 }

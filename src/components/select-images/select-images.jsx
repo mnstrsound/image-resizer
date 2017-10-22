@@ -12,6 +12,10 @@ import './select-images.css';
 @observer
 @cn('select-images')
 export default class SelectImages extends React.Component {
+    static shouldCancelStart(e) {
+        return e.target.classList.contains('selected-image__delete');
+    }
+
     handleInputChange = () => {
         const { appStore } = this.props;
         const { files } = this.input;
@@ -24,13 +28,14 @@ export default class SelectImages extends React.Component {
     }
 
     render(cn) {
-        const { images, link } = this.props.appStore;
+        const { images } = this.props.appStore;
         return (
             <div className={ cn }>
                 { images.length
                     ? <SelectedImages
                         axis='xy'
                         images={ images }
+                        shouldCancelStart={ SelectImages.shouldCancelStart }
                         onSortEnd={ this.handleSortEnd }
                     />
                     : <label className={ cn('area') }>
@@ -45,7 +50,6 @@ export default class SelectImages extends React.Component {
                         />
                     </label>
                 }
-                { link && <a href={ link } target='blank'>Скачать</a> }
             </div>
         );
     }

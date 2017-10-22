@@ -1,13 +1,22 @@
 import React from 'react';
-import cn from 'arui-feather/cn';
 import { SortableElement } from 'react-sortable-hoc';
+import { observer, inject } from 'mobx-react';
+import cn from 'arui-feather/cn';
 
 import './selected-image.css';
 
+@inject(({ appStore }) => ({
+    appStore
+}))
+@observer
 @cn('selected-image')
 class SelectedImage extends React.Component {
     state = {
         imageSrc: null
+    }
+
+    handleDeleteButtonClick = () => {
+        this.props.appStore.deleteImage(this.props.image);
     }
 
     componentDidMount() {
@@ -28,6 +37,12 @@ class SelectedImage extends React.Component {
                         alt=''
                         className={ cn('image') }
                     />
+                    <span
+                        className={ cn('delete') }
+                        onClick={ this.handleDeleteButtonClick }
+                    >
+                        &#9746;
+                    </span>
                 </div>
                 <div
                     title={ image.name }

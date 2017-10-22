@@ -61,5 +61,10 @@
         &-watermark {
             float: right;
         }
+
+        &-button {
+            float: right;
+            width: 90px;
+        }
     }
 }

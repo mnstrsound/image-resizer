@@ -4,13 +4,13 @@ import path from 'path';
 import getWatermarkGravity from '../utils/get-watermark-gravity';
 
 export default class ImageMagick {
-    static process(filePath, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
+    static process(imagePaths, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
         const { width, height, crop } = resizeSettings;
         const { opacity, size, positionX, positionY } = watermarkSettings;
         const imageSize = `${width}x${height}`;
         const watermarkSize = `${(width * Number(size)) / 100}x${(height * Number(size)) / 100}`;
         const gravity = getWatermarkGravity(positionX, positionY);
-        let execString = `convert \\( ${filePath} \
+        let execString = `convert \\( ${imagePaths} \
             -resize ${imageSize}^ \
             -gravity center \
             ${crop ? `-crop ${imageSize}+0+0` : ''} \\) \
@@ -31,17 +31,17 @@ export default class ImageMagick {
         return new Promise((resolve, reject) => {
             exec(execString, (err) => {
                 if (err) reject(err);
-                resolve(filePath);
+                resolve(imagePaths);
             });
         });
     }
 
-    static processAll(filesPaths, resizeSettings, watermarkPath, watermarkSettings, namingSettings, dir) {
+    static processAll(imagesPaths, resizeSettings, watermarkPath, watermarkSettings, namingSettings, dir) {
         const { prefix, indexation, format } = namingSettings;
         return Promise.all(
-            filesPaths.map(
-                (filePath, index) => ImageMagick.process(
-                    filePath,
+            imagesPaths.map(
+                (imagePaths, index) => ImageMagick.process(
+                    imagePaths,
                     resizeSettings,
                     watermarkPath,
                     watermarkSettings,

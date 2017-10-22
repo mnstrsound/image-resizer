@@ -38,6 +38,7 @@ export default class SelectWatermark extends React.Component {
                 <input
                     ref={ (input) => { this.input = input; } }
                     type='file'
+                    accept='images/*'
                     onChange={ this.handleInputChange }
                 />
             </label>

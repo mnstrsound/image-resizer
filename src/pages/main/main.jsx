@@ -11,12 +11,12 @@ class Main extends React.Component {
     render(cn) {
         return (
             <div className={ cn }>
-                <SettingsForm
-                    className={ cn('settings-form') }
-                />
-                <SelectImages
-                    className={ cn('select-images') }
-                />
+                <div className={ cn('settings-form') }>
+                    <SettingsForm />
+                </div>
+                <div className={ cn('select-images') }>
+                    <SelectImages />
+                </div>
             </div>
         );
     }

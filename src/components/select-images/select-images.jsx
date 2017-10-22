@@ -38,6 +38,7 @@ export default class SelectImages extends React.Component {
                         <input
                             ref={ (input) => { this.input = input; } }
                             type='file'
+                            accept='image/*'
                             multiple={ true }
                             className={ cn('area-input') }
                             onChange={ this.handleInputChange }

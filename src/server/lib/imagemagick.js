@@ -4,16 +4,16 @@ import path from 'path';
 import getWatermarkGravity from '../utils/get-watermark-gravity';
 
 export default class ImageMagick {
-    static process(imagePaths, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
+    static process(imagePath, resizeSettings, watermarkPath, watermarkSettings, fileDest) {
         const { width, height, crop } = resizeSettings;
         const { opacity, size, positionX, positionY } = watermarkSettings;
         const imageSize = `${width}x${height}`;
         const watermarkSize = `${(width * Number(size)) / 100}x${(height * Number(size)) / 100}`;
         const gravity = getWatermarkGravity(positionX, positionY);
-        let execString = `convert \\( ${imagePaths} \
+        let execString = `convert \\( ${imagePath} \
             -resize ${imageSize}^ \
             -gravity center \
-            ${crop ? `-crop ${imageSize}+0+0` : ''} \\) \
+            ${crop ? `-extent ${imageSize}` : ''} \\) \
         \\`;
 
         if (watermarkPath) {
@@ -31,7 +31,7 @@ export default class ImageMagick {
         return new Promise((resolve, reject) => {
             exec(execString, (err) => {
                 if (err) reject(err);
-                resolve(imagePaths);
+                resolve(imagePath);
             });
         });
     }
@@ -40,8 +40,8 @@ export default class ImageMagick {
         const { prefix, indexation, format } = namingSettings;
         return Promise.all(
             imagesPaths.map(
-                (imagePaths, index) => ImageMagick.process(
-                    imagePaths,
+                (imagePath, index) => ImageMagick.process(
+                    imagePath,
                     resizeSettings,
                     watermarkPath,
                     watermarkSettings,

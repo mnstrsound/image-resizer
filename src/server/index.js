@@ -15,7 +15,13 @@ app.use(routes());
 app.use(allowedMethods());
 
 app.use((ctx) => {
-    ctx.render('index', { state: JSON.stringify({}), env });
+    ctx.render(
+        'index',
+        {
+            state: JSON.stringify({}),
+            env
+        }
+    );
 });
 
 app.listen(3000);

@@ -4,12 +4,14 @@ const ARUI_DEV_TEMPLATE = require('arui-presets/webpack.development');
 const ARUI_PROD_TEMPLATE = require('arui-presets/webpack.production');
 const merge = require('webpack-merge');
 
+const env = process.env.NODE_ENV;
+
 module.exports = merge.smart(
     {
         entry: './src/index.jsx',
         output: {
             path: path.resolve(__dirname, './build/'),
-            filename: '[name].js'
+            filename: `[name]${env === 'production' ? '.[hash]' : ''}.js`
         }
     },
     ARUI_TEMPLATE,

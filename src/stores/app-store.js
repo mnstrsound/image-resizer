@@ -3,7 +3,7 @@ import { arrayMove } from 'react-sortable-hoc';
 
 import SettingsModel from '../models/settings';
 
-export default class AppStore {
+class AppStore {
     settings = new SettingsModel();
 
     @observable images = [];
@@ -62,3 +62,5 @@ export default class AppStore {
         return this.images.length > 0 && this.images.reduce((acc, item) => (acc += item.size), 0) < (1024 * 1024 * 100);
     }
 }
+
+export default new AppStore();

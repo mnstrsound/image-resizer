@@ -1,7 +1,9 @@
 import { RouterStore } from 'mobx-react-router';
-import AppStore from './app-store';
+import appStore from './app-store';
+import settingsForm from './settings-form-store';
 
 export default () => ({
     routerStore: new RouterStore(),
-    appStore: new AppStore()
+    appStore,
+    settingsForm
 });

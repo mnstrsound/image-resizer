@@ -4,6 +4,7 @@ import cn from 'arui-feather/cn';
 
 import SelectImages from '../../components/select-images';
 import SettingsForm from '../../components/settings-form';
+import SettingsForm2 from '../../components/settings-form2';
 
 import './main.css';
 
@@ -15,7 +16,8 @@ class Main extends React.Component {
         return (
             <div className={ cn }>
                 <div className={ cn('settings-form') }>
-                    <SettingsForm />
+                    {/*<SettingsForm />*/}
+                    <SettingsForm2 />
                 </div>
                 <div className={ cn('select-images') }>
                     <SelectImages />

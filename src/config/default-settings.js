@@ -3,9 +3,15 @@ import WatermarkPositions from '../constants/watermark-positions';
 
 export default {
     resize: {
+        width: 1000,
+        height: 1000,
+        crop: true
+    },
+    preview: {
         width: 100,
         height: 100,
-        crop: true
+        postfix: '',
+        use: false,
     },
     watermark: {
         image: null,

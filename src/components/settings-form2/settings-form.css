@@ -1,0 +1,70 @@
+.settings-form {
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    border: 1px solid #eee;
+
+    &__fieldset {
+        margin-bottom: 11px;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #eee;
+        }
+    }
+
+    &__legend {
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    &__row {
+        margin-bottom: 10px;
+        overflow: hidden;
+
+        &_hidden {
+            display: none;
+        }
+
+        &-label {
+            width: 110px;
+            margin-right: 10px;
+            text-align: right;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        &-input,
+        &-select {
+            width: 90px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        &-checkbox {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+
+            &-text {
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 5px;
+            }
+        }
+
+        &-watermark {
+            float: right;
+        }
+
+        &-button {
+            float: right;
+            width: 90px;
+        }
+    }
+}

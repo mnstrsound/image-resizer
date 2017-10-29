@@ -14,7 +14,7 @@ export default class SelectWatermark extends React.Component {
             this.setState({ imageSrc: null });
         }
         this.setState({ files });
-        if (onChange) onChange(files);
+        if (onChange) onChange(files.length ? files : null);
     }
 
     constructor(props) {

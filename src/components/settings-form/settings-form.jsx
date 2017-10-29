@@ -106,6 +106,7 @@ export default class SettingsForm extends React.Component {
                 onSubmit={ this.handleFormSubmit }
             >
                 { this.renderResizeControls(cn) }
+                { this.renderPreviewControls(cn) }
                 { this.renderWatermarkControls(cn) }
                 { this.renderNamingControls(cn) }
                 { this.renderSubmitControl(cn) }
@@ -174,6 +175,92 @@ export default class SettingsForm extends React.Component {
                 { this.renderResizeWidthControl(cn) }
                 { this.renderResizeHeightControl(cn) }
                 { this.renderResizeCropControl(cn) }
+            </fieldset>
+        );
+    }
+
+    renderPreviewWidthControl(cn) {
+        const { appStore: { settings } } = this.props;
+        return (
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Ширина (px)</label>
+                <input
+                    type='number'
+                    min='1'
+                    required={ true }
+                    value={ settings.resize.width }
+                    className={ cn('row-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleResizeWidthChange }
+                />
+            </div>
+        );
+    }
+
+    renderPreviewHeightControl(cn) {
+        const { appStore: { settings } } = this.props;
+        return (
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') }>Высота (px)</label>
+                <input
+                    type='number'
+                    min='1'
+                    required={ true }
+                    value={ settings.resize.height }
+                    className={ cn('row-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleResizeHeightChange }
+                />
+            </div>
+        );
+    }
+
+    renderPreviewPostfixControl(cn) {
+        const { appStore: { settings } } = this.props;
+        return (
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') } >Постфикс</label>
+                <input
+                    type='text'
+                    name='postfix'
+                    pattern='[\w-]*'
+                    maxLength='20'
+                    minLength='1'
+                    value={ settings.naming.prefix }
+                    className={ cn('row-input') }
+                    onFocus={ this.handleInputFocus }
+                    onChange={ this.handleNamingPrefixChange }
+                />
+            </div>
+        );
+    }
+
+    renderPreviewUseControl(cn) {
+        const { appStore: { settings } } = this.props;
+        return (
+            <div className={ cn('row') }>
+                <label className={ cn('row-label') } />
+                <input
+                    type='checkbox'
+                    checked={ settings.resize.crop }
+                    className={ cn('row-checkbox') }
+                    onChange={ this.handleResizeCropChange }
+                />
+                <label className={ cn('row-checkbox-text') }>
+                    Нужна
+                </label>
+            </div>
+        );
+    }
+
+    renderPreviewControls(cn) {
+        return (
+            <fieldset className={ cn('fieldset') }>
+                <legend className={ cn('legend') }>Миниатюра</legend>
+                { this.renderPreviewWidthControl(cn) }
+                { this.renderPreviewHeightControl(cn) }
+                { this.renderPreviewPostfixControl(cn) }
+                { this.renderPreviewUseControl(cn) }
             </fieldset>
         );
     }
